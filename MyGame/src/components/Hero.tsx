@@ -3,125 +3,114 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Play, UserPlus, Zap, Trophy, Star } from "lucide-react";
+import { Play, UserPlus, Zap, Trophy, Star, Home, Info, LogIn } from "lucide-react";
 
 const Hero = () => {
-    return (
-        <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
-            {/* Dynamic Tropical Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-yellow-50 via-green-50 to-emerald-100">
-                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#fbbf24 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
-            </div>
+    const navLinks = [
+        { name: "Home", href: "/", icon: Home },
+        { name: "Leaderboard", href: "/leaderboard", icon: Trophy },
+        { name: "About", href: "/about", icon: Info },
+    ];
 
-            {/* Floating Animated Decorations */}
-            <div className="absolute inset-0 pointer-events-none">
-                {[...Array(6)].map((_, i) => (
+    return (
+        <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_50%_50%,#ff80ab_0%,#7c4dff_100%)]">
+            {/* HUD - Left Panel (Navigation) */}
+            <div className="absolute top-10 left-10 z-30 hidden lg:flex flex-col space-y-4">
+                {navLinks.map((link) => (
                     <motion.div
-                        key={i}
-                        initial={{ y: Math.random() * 100, opacity: 0 }}
-                        animate={{
-                            y: [0, -20, 0],
-                            opacity: [0.3, 0.6, 0.3],
-                            rotate: [0, i % 2 === 0 ? 10 : -10, 0]
-                        }}
-                        transition={{
-                            duration: 5 + Math.random() * 5,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                            delay: i * 0.5
-                        }}
-                        className="absolute hidden md:block"
-                        style={{
-                            top: `${Math.random() * 80}%`,
-                            left: `${Math.random() * 90}%`,
-                        }}
+                        key={link.name}
+                        whileHover={{ scale: 1.1, x: 10 }}
+                        className="bg-white/20 backdrop-blur-xl p-4 rounded-2xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-yellow hover:border-white transition-all"
                     >
-                        {i % 2 === 0 ? (
-                            <span className="text-4xl filter drop-shadow-md">🍌</span>
-                        ) : (
-                            <Star className="text-yellow-400 fill-yellow-400 w-8 h-8 opacity-40" />
-                        )}
+                        <Link href={link.href} className="flex items-center space-x-4">
+                            <link.icon className="text-white group-hover:text-candy-purple" size={24} />
+                            <span className="text-white group-hover:text-candy-purple font-black uppercase text-sm tracking-widest">{link.name}</span>
+                        </Link>
                     </motion.div>
                 ))}
             </div>
 
-            {/* Main Content Overlay */}
-            <div className="container mx-auto px-4 z-10 text-center">
+            <div className="absolute top-10 right-10 z-30 hidden lg:flex flex-col space-y-4 items-end">
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="max-w-4xl mx-auto"
+                    whileHover={{ scale: 1.1, x: -10 }}
+                    className="bg-white/20 backdrop-blur-xl p-4 rounded-2xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-yellow hover:border-white transition-all"
                 >
-                    {/* Badge */}
-                    <motion.div
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="inline-flex items-center space-x-2 bg-yellow-100 border border-yellow-200 text-yellow-800 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wider mb-8 shadow-sm"
-                    >
-                        <Zap size={16} className="fill-yellow-500 text-yellow-500" />
-                        <span>New Quiz Season Live!</span>
-                    </motion.div>
+                    <Link href="/signin" className="flex items-center space-x-4">
+                        <span className="text-white group-hover:text-candy-purple font-black uppercase text-sm tracking-widest">Login</span>
+                        <LogIn className="text-white group-hover:text-candy-purple" size={24} />
+                    </Link>
+                </motion.div>
+                <div className="mt-4 bg-candy-pink/80 backdrop-blur-md p-2 rounded-2xl border-2 border-white shadow-lg animate-bounce">
+                    <span className="text-white font-black text-xs uppercase px-2">New Event! 🍌</span>
+                </div>
+            </div>
 
-                    {/* Heading */}
-                    <h1 className="text-5xl md:text-7xl font-sans font-extrabold mb-6 leading-tight">
-                        Test Your Knowledge with <br />
-                        <span className="text-yellow-500 drop-shadow-sm">Banana Quiz!</span>
+            {/* Background */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(white 2px, transparent 2px)', backgroundSize: '30px 30px' }}></div>
+            </div>
+
+            {/* Floating Bananas */}
+            <div className="absolute inset-0 pointer-events-none z-0">
+                {[...Array(12)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{
+                            y: [0, -40, 0],
+                            x: [0, i % 2 === 0 ? 20 : -20, 0],
+                            opacity: [0.4, 0.8, 0.4],
+                            scale: [1, 1.2, 1],
+                            rotate: [0, 360]
+                        }}
+                        transition={{
+                            duration: 4 + Math.random() * 6,
+                            repeat: Infinity,
+                            delay: i * 0.3
+                        }}
+                        className="absolute text-5xl filter drop-shadow-[0_5px_15px_rgba(0,0,0,0.3)]"
+                        style={{
+                            top: `${Math.random() * 90}%`,
+                            left: `${Math.random() * 90}%`,
+                        }}
+                    >
+                        {['🍌'][0]}
+                    </motion.div>
+                ))}
+            </div>
+
+            {/* Main Content */}
+            <div className="container mx-auto px-4 z-10 text-center flex flex-col items-center">
+                <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", damping: 12 }}
+                >
+                    <h1 className="text-8xl md:text-9xl font-black text-white mb-2 select-none leading-none">
+                        <span className="block drop-shadow-[0_10px_0_#d81b60] text-shadow-bubbly">BANANA</span>
+                        <span className="block text-candy-yellow drop-shadow-[0_10px_0_#f57f17] text-shadow-bubbly">CRUSH</span>
                     </h1>
 
-                    {/* Subheading */}
-                    <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed font-medium">
-                        Answer time-limited questions, unlock achievements, and climb the leaderboard to become the ultimate Banana Champ.
-                    </p>
 
-                    {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            <Link
-                                href="/register"
-                                className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-gray-900 text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-gray-800 transition-all duration-300"
-                            >
-                                <UserPlus size={22} />
-                                <span>Register Now</span>
-                            </Link>
-                        </motion.div>
 
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            <Link
-                                href="/play"
-                                className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-yellow-400 text-yellow-900 px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:bg-yellow-500 transition-all duration-300 ring-4 ring-yellow-400/20"
-                            >
-                                <Play size={22} fill="currentColor" />
-                                <span>Start Playing</span>
-                            </Link>
-                        </motion.div>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mt-10">
+                        <motion.button
+                            whileHover={{ scale: 1.1, rotate: -2 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="candy-button w-full sm:w-auto bg-candy-pink text-white px-12 py-6 rounded-[2.5rem] text-4xl font-black shadow-[0_12px_0_0_#ad1457] active:shadow-none transition-all flex items-center justify-center space-x-4 border-4 border-white"
+                            onClick={() => window.location.href = '/play'}
+                        >
+                            <Play fill="currentColor" size={40} />
+                            <span>PLAY NOW</span>
+                        </motion.button>
                     </div>
 
-                    {/* Features Preview */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1, duration: 1 }}
-                        className="mt-16 flex flex-wrap justify-center gap-8 md:gap-16 opacity-60"
-                    >
-                        <div className="flex items-center space-x-2">
-                            <Trophy size={20} />
-                            <span className="text-sm font-semibold uppercase">Daily Rewards</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Star size={20} />
-                            <span className="text-sm font-semibold uppercase">500+ Questions</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <UserPlus size={20} />
-                            <span className="text-sm font-semibold uppercase">Multiplayer</span>
-                        </div>
-                    </motion.div>
                 </motion.div>
             </div>
         </section>
     );
 };
+
+
 
 export default Hero;
