@@ -6,6 +6,7 @@ import { Mail, Lock, ArrowRight } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import SocialLoginButtons from "./SocialLoginButtons";
 
 interface LoginFormProps {
     onSuccess?: () => void;
@@ -104,6 +105,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegister }) 
                 <span>LOGIN NOW</span>
                 <ArrowRight size={24} />
             </motion.button>
+
+            <SocialLoginButtons onSuccess={onSuccess} />
 
             <div className="text-center pt-2">
                 <p className="text-gray-400 font-bold text-sm">

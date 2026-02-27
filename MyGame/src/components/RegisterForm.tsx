@@ -6,6 +6,7 @@ import { Mail, Lock, User, ArrowRight } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import SocialLoginButtons from "./SocialLoginButtons";
 
 interface RegisterFormProps {
     onSuccess?: () => void;
@@ -116,9 +117,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin 
                 type="submit"
                 className="candy-button w-full bg-candy-pink text-white py-5 rounded-2xl text-xl font-black shadow-[0_8px_0_0_#ad1457] active:shadow-none transition-all flex items-center justify-center space-x-3 border-4 border-white"
             >
-                <span>CREATE ACCOUNT</span>
+                <span>JOIN THE PARTY</span>
                 <ArrowRight size={24} />
             </motion.button>
+
+            <SocialLoginButtons onSuccess={onSuccess} />
 
             <div className="text-center pt-2">
                 <p className="text-gray-400 font-bold text-sm">
