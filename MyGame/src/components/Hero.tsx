@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Play, UserPlus, Zap, Trophy, Star, Home, Info, LogIn } from "lucide-react";
+import TalkingBanana from "./Banana Character";
 
 const Hero = () => {
     const navLinks = [
@@ -14,7 +15,7 @@ const Hero = () => {
 
     return (
         <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_50%_50%,#ff80ab_0%,#7c4dff_100%)]">
-            {/* HUD - Left Panel (Navigation) */}
+
             <div className="absolute top-10 left-10 z-30 hidden lg:flex flex-col space-y-4">
                 {navLinks.map((link) => (
                     <motion.div
@@ -79,7 +80,6 @@ const Hero = () => {
                 ))}
             </div>
 
-            {/* Main Content */}
             <div className="container mx-auto px-4 z-10 text-center flex flex-col items-center">
                 <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
@@ -87,11 +87,13 @@ const Hero = () => {
                     transition={{ type: "spring", damping: 12 }}
                 >
                     <h1 className="text-8xl md:text-9xl font-black text-white mb-2 select-none leading-none">
-                        <span className="block drop-shadow-[0_10px_0_#d81b60] text-shadow-bubbly">BANANA</span>
+                        <span className="block drop-shadow-[0_10px_0_var(--candy-pink)] text-shadow-bubbly">BANANA</span>
                         <span className="block text-candy-yellow drop-shadow-[0_10px_0_#f57f17] text-shadow-bubbly">CRUSH</span>
                     </h1>
 
-
+                    <div className="mt-10 mb-10 flex justify-center">
+                        <TalkingBanana />
+                    </div>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mt-10">
                         <motion.button
