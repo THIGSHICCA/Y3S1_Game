@@ -50,7 +50,7 @@ const GameHUD: React.FC<GameHUDProps> = ({
                             </div>
                         </div>
 
-                        {/* Lives Display */}
+                        {/* Lives */}
                         <div className="bg-white/90 backdrop-blur-md rounded-3xl p-4 md:p-6 border-4 border-red-400 shadow-lg flex items-center space-x-4">
                             <div className="flex space-x-1">
                                 {[...Array(3)].map((_, i) => (

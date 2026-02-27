@@ -8,7 +8,7 @@ import GameBoard from "@/components/GameBoard";
 import GameHUD from "@/components/GameHUD";
 import DifficultySelection from "@/components/DifficultySelection";
 import GameOverScreen from "@/components/GameOverScreen";
-import { fetchPuzzle, BananaPuzzle } from "@/services/gameService";
+import { fetchPuzzle, BananaPuzzle } from "@/api/bananaApi";
 
 type Difficulty = 'easy' | 'medium' | 'hard';
 
