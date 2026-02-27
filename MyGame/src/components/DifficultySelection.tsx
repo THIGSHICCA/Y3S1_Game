@@ -11,9 +11,9 @@ interface DifficultySelectionProps {
 }
 
 const DIFFICULTY_SETTINGS = {
-    easy: { time: 30, multiplier: 1, label: "EASY PEASY", icon: Shield, color: "text-green-500", bg: "bg-green-50" },
-    medium: { time: 15, multiplier: 2, label: "STEPPIN' UP", icon: Zap, color: "text-candy-yellow", bg: "bg-yellow-50" },
-    hard: { time: 10, multiplier: 3, label: "BANANA INSANE", icon: Flame, color: "text-red-500", bg: "bg-red-50" }
+    easy: { time: 30, multiplier: 1, label: "EASY", icon: Shield, color: "text-green-500", bg: "bg-green-50" },
+    medium: { time: 15, multiplier: 2, label: "MEDIUM", icon: Zap, color: "text-candy-yellow", bg: "bg-yellow-50" },
+    hard: { time: 10, multiplier: 3, label: "HARD", icon: Flame, color: "text-red-500", bg: "bg-red-50" }
 };
 
 const DifficultySelection: React.FC<DifficultySelectionProps> = ({ onSelect }) => {
