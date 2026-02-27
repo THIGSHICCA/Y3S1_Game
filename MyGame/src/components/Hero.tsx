@@ -3,14 +3,16 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Play, UserPlus, Zap, Trophy, Star, Home, Info, LogIn } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Play, Trophy, Home, Info, LogIn } from "lucide-react";
 import TalkingBanana from "./Banana Character";
 
 const Hero = () => {
+    const router = useRouter();
     const navLinks = [
         { name: "Home", href: "/", icon: Home },
+        { name: "Play", href: "/play", icon: Play },
         { name: "Leaderboard", href: "/leaderboard", icon: Trophy },
-        { name: "About", href: "/about", icon: Info },
     ];
 
     return (
@@ -99,8 +101,8 @@ const Hero = () => {
                         <motion.button
                             whileHover={{ scale: 1.1, rotate: -2 }}
                             whileTap={{ scale: 0.9 }}
-                            className="candy-button w-full sm:w-auto bg-candy-pink text-white px-12 py-6 rounded-[2.5rem] text-4xl font-black shadow-[0_12px_0_0_#ad1457] active:shadow-none transition-all flex items-center justify-center space-x-4 border-4 border-white"
-                            onClick={() => window.location.href = '/play'}
+                            className="candy-button w-full sm:w-auto bg-candy-pink text-white px-12 py-6 rounded-[2.5rem] text-4xl font-black shadow-[0_12px_0_0_#ad1457] border-4 border-white flex items-center justify-center space-x-4"
+                            onClick={() => router.push('/play')}
                         >
                             <Play fill="currentColor" size={40} />
                             <span>PLAY NOW</span>
