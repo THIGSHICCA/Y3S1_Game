@@ -20,7 +20,7 @@ const AuthCard: React.FC<AuthCardProps> = ({ title, subtitle, children, onClose,
             transition={{ type: "spring", damping: 15 }}
             className="relative w-full max-w-md bg-white rounded-[3rem] border-8 border-candy-yellow shadow-[0_20px_0_0_#f57f17]"
         >
-            {/* Close Button - Only if onClose is provided */}
+
             {onClose && (
                 <button
                     onClick={onClose}
