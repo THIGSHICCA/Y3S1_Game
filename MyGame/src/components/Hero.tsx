@@ -19,7 +19,7 @@ const Hero = () => {
     ];
 
     return (
-        <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_50%_50%,#ff80ab_0%,#7c4dff_100%)]">
+        <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden">
 
             <div className="absolute top-10 left-10 z-30 hidden lg:flex flex-col space-y-4">
                 {navLinks.map((link) => (
@@ -64,9 +64,13 @@ const Hero = () => {
                 </div>
             </div>
 
-            {/* Background */}
+            {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(white 2px, transparent 2px)', backgroundSize: '30px 30px' }}></div>
+                <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: 'url("/BackgroundImage/freepik__lively-banana-garden-scene-cartoon-banana-bunches-__24204.png")' }}
+                />
+                <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]" />
             </div>
 
             {/* Floating Bananas */}

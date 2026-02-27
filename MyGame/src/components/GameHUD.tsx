@@ -28,8 +28,6 @@ const GameHUD: React.FC<GameHUDProps> = ({
                 onClick={onQuit}
                 className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-2xl border-2 border-white/20 transition-all flex items-center space-x-2 font-black uppercase text-sm tracking-widest pointer-events-auto shadow-xl"
             >
-                <ArrowLeft size={20} />
-                <span>QUITTIN'?</span>
             </motion.button>
 
             <AnimatePresence>
