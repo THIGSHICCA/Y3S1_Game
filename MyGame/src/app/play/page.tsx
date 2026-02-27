@@ -1,20 +1,100 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trophy, Heart, ArrowLeft, Gamepad2, Sparkles } from "lucide-react";
+import GameBoard from "@/components/GameBoard";
+import GameHUD from "@/components/GameHUD";
+import DifficultySelection from "@/components/DifficultySelection";
+import GameOverScreen from "@/components/GameOverScreen";
+import { fetchPuzzle, BananaPuzzle } from "@/services/gameService";
+
+type Difficulty = 'easy' | 'medium' | 'hard';
+
+const DIFFICULTY_SETTINGS = {
+    easy: { time: 30, multiplier: 1 },
+    medium: { time: 15, multiplier: 2 },
+    hard: { time: 10, multiplier: 3 }
+};
 
 export default function PlayPage() {
     const { isLoggedIn, user } = useAuth();
     const router = useRouter();
+
+    const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
+    const [puzzle, setPuzzle] = useState<BananaPuzzle | null>(null);
+    const [score, setScore] = useState(0);
+    const [highScore, setHighScore] = useState(0);
+    const [lives, setLives] = useState(3);
+    const [isLoading, setIsLoading] = useState(false);
+    const [gameStarted, setGameStarted] = useState(false);
+    const [gameOver, setGameOver] = useState(false);
+
+    const loadNewPuzzle = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const data = await fetchPuzzle();
+            setPuzzle(data);
+        } catch (error) {
+            console.error("Failed to load puzzle");
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
         if (!isLoggedIn) {
             router.push("/signin?returnUrl=/play");
         }
     }, [isLoggedIn, router]);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            const savedHighScore = localStorage.getItem('bananaCrush_highScore');
+            if (savedHighScore) setHighScore(parseInt(savedHighScore));
+        }
+    }, [isLoggedIn]);
+
+    const startGame = (level: Difficulty) => {
+        setDifficulty(level);
+        setScore(0);
+        setLives(3);
+        setGameOver(false);
+        setGameStarted(true);
+        loadNewPuzzle();
+    };
+
+    const handleCorrect = () => {
+        const points = 100 * (DIFFICULTY_SETTINGS[difficulty!].multiplier);
+        const newScore = score + points;
+        setScore(newScore);
+        if (newScore > highScore) {
+            setHighScore(newScore);
+            localStorage.setItem('bananaCrush_highScore', newScore.toString());
+        }
+        loadNewPuzzle();
+    };
+
+    const handleIncorrect = () => {
+        const newLives = lives - 1;
+        setLives(newLives);
+        if (newLives <= 0) {
+            setGameOver(true);
+        }
+    };
+
+    const handleTimeUp = () => {
+        handleIncorrect();
+    };
+
+    const restartGame = () => {
+        setDifficulty(null);
+        setScore(0);
+        setLives(3);
+        setGameOver(false);
+        setGameStarted(false);
+    };
 
     if (!isLoggedIn) return null;
 
@@ -30,77 +110,45 @@ export default function PlayPage() {
             </div>
 
             <div className="max-w-6xl mx-auto relative z-10">
-                {/* HUD Header placeholder */}
-                <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-                    <motion.button
-                        whileHover={{ x: -5 }}
-                        onClick={() => router.push('/')}
-                        className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-2xl border-2 border-white/20 transition-all flex items-center space-x-2 font-black uppercase text-sm tracking-widest"
-                    >
-                        <ArrowLeft size={20} />
-                        <span>QUITTIN'?</span>
-                    </motion.button>
-
-                    <div className="flex items-center space-x-6">
-                        {/* Score Display (Placeholder) */}
-                        <div className="bg-white/90 backdrop-blur-md rounded-3xl p-4 md:p-6 border-4 border-candy-yellow shadow-lg flex items-center space-x-4 min-w-[180px]">
-                            <div className="w-12 h-12 bg-candy-yellow rounded-2xl flex items-center justify-center text-white shadow-inner">
-                                <Trophy size={28} />
-                            </div>
-                            <div>
-                                <p className="text-[10px] font-black text-candy-yellow/60 uppercase tracking-widest leading-none mb-1">Score</p>
-                                <p className="text-3xl font-black text-candy-purple leading-none">0</p>
-                            </div>
-                        </div>
-
-                        {/* Lives Display (Placeholder) */}
-                        <div className="bg-white/90 backdrop-blur-md rounded-3xl p-4 md:p-6 border-4 border-red-400 shadow-lg flex items-center space-x-4">
-                            <div className="flex space-x-1">
-                                {[...Array(3)].map((_, i) => (
-                                    <motion.div
-                                        key={i}
-                                        animate={{ scale: [1, 1.2, 1] }}
-                                        transition={{ repeat: Infinity, duration: 2, delay: i * 0.5 }}
-                                    >
-                                        <Heart
-                                            size={28}
-                                            className="fill-red-500 text-red-500"
-                                        />
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <GameHUD
+                    score={score}
+                    lives={lives}
+                    highScore={highScore}
+                    gameStarted={gameStarted}
+                    gameOver={gameOver}
+                    onQuit={() => router.push('/')}
+                />
 
                 <div className="flex justify-center">
                     <AnimatePresence mode="wait">
-                        <motion.div
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            className="bg-white rounded-[3.5rem] p-12 text-center max-w-lg border-8 border-candy-yellow shadow-[0_20px_0_0_#f57f17]"
-                        >
-                            <div className="w-24 h-24 bg-candy-yellow rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-inner">
-                                <Gamepad2 size={56} className="text-white" />
-                            </div>
-                            <h1 className="text-4xl font-black text-candy-purple mb-4">READY TO COUNT THE BANANAS?</h1>
-                            <p className="text-gray-500 font-bold mb-10 text-lg text-pretty">
-                                Welcome, <span className="text-candy-pink">@{user?.username}</span>! <br />
-                                The game is loading. Show your counting skills!
-                            </p>
-                            <div className="flex flex-col space-y-4">
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="candy-button bg-candy-pink text-white w-full py-6 rounded-3xl text-2xl font-black shadow-[0_10px_0_0_#ad1457] border-4 border-white"
-                                >
-                                    GET STARTED
-                                </motion.button>
-                                <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">
-                                    Click to play the game!
-                                </p>
-                            </div>
-                        </motion.div>
+                        {!gameStarted && !gameOver ? (
+                            <DifficultySelection onSelect={startGame} />
+                        ) : gameOver ? (
+                            <GameOverScreen
+                                score={score}
+                                difficulty={difficulty}
+                                onRestart={restartGame}
+                                onLeaderboard={() => router.push('/leaderboard')}
+                            />
+                        ) : (
+                            <motion.div
+                                key="board"
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                className="w-full flex justify-center"
+                            >
+                                {puzzle && difficulty && (
+                                    <GameBoard
+                                        puzzle={puzzle}
+                                        onCorrect={handleCorrect}
+                                        onIncorrect={handleIncorrect}
+                                        onTimeUp={handleTimeUp}
+                                        isLoading={isLoading}
+                                        timeLimit={DIFFICULTY_SETTINGS[difficulty].time}
+                                    />
+                                )}
+                            </motion.div>
+                        )}
                     </AnimatePresence>
                 </div>
             </div>
