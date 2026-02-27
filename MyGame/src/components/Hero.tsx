@@ -4,13 +4,14 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Play, Trophy, Home, Info, LogIn } from "lucide-react";
+import { Play, Trophy, Home, Info, Volume2, VolumeX } from "lucide-react";
 import TalkingBanana from "./Banana Character";
 import LeaderboardCard from "./LeaderboardCard";
 
 const Hero = () => {
     const router = useRouter();
     const [showLeaderboard, setShowLeaderboard] = React.useState(false);
+    const [isMuted, setIsMuted] = React.useState(false);
 
     const navLinks = [
         { name: "Home", href: "/", icon: Home },
@@ -52,19 +53,23 @@ const Hero = () => {
             <div className="absolute top-10 right-10 z-30 hidden lg:flex flex-col space-y-4 items-end">
                 <motion.div
                     whileHover={{ scale: 1.1, x: -10 }}
+                    onClick={() => setIsMuted(!isMuted)}
                     className="bg-white/20 backdrop-blur-xl p-4 rounded-2xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-yellow hover:border-white transition-all"
                 >
-                    <Link href="/signin" className="flex items-center space-x-4">
-                        <span className="text-white group-hover:text-candy-purple font-black uppercase text-sm tracking-widest">Login</span>
-                        <LogIn className="text-white group-hover:text-candy-purple" size={24} />
-                    </Link>
+                    <div className="flex items-center space-x-4">
+                        <span className="text-white group-hover:text-candy-purple font-black uppercase text-sm tracking-widest">
+                            {isMuted ? "Sound Off" : "Sound On"}
+                        </span>
+                        {isMuted ? (
+                            <VolumeX className="text-white group-hover:text-candy-purple" size={24} />
+                        ) : (
+                            <Volume2 className="text-white group-hover:text-candy-purple" size={24} />
+                        )}
+                    </div>
                 </motion.div>
-                <div className="mt-4 bg-candy-pink/80 backdrop-blur-md p-2 rounded-2xl border-2 border-white shadow-lg animate-bounce">
-                    <span className="text-white font-black text-xs uppercase px-2">New Event! 🍌</span>
-                </div>
             </div>
 
-            {/* Background Image with Overlay */}
+            {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <div
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -108,12 +113,12 @@ const Hero = () => {
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ type: "spring", damping: 12 }}
                 >
-                    <h1 className="text-8xl md:text-9xl font-black text-white mb-2 select-none leading-none">
+                    <h1 className="text-8xl md:text-9xl font-black text-white mb-12 select-none leading-none">
                         <span className="block drop-shadow-[0_10px_0_var(--candy-pink)] text-shadow-bubbly">BANANA</span>
                         <span className="block text-candy-yellow drop-shadow-[0_10px_0_#f57f17] text-shadow-bubbly">CRUSH</span>
                     </h1>
 
-                    <div className="mt-10 mb-10 flex justify-center">
+                    <div className="mt-28 mb-10 flex justify-center">
                         <TalkingBanana />
                     </div>
 
