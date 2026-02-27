@@ -20,7 +20,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Mock authentication login
         login(email);
 
         const returnUrl = searchParams.get("returnUrl") || "/";
