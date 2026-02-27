@@ -14,11 +14,23 @@ const leaderboardData = [
     { rank: 5, name: "FruitCrush", score: 7200, avatar: "⭐" },
 ];
 
-const LeaderboardCard = () => {
+interface LeaderboardCardProps {
+    isModal?: boolean;
+    isOpen?: boolean;
+    onClose?: () => void;
+}
+
+const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOpen = true, onClose }) => {
     const router = useRouter();
 
     return (
-        <AuthCard title="LEADERS" subtitle="Top Banana Crushers">
+        <AuthCard
+            title="LEADERS"
+            subtitle="Top Banana Crushers"
+            isModal={isModal}
+            isOpen={isOpen}
+            onClose={onClose}
+        >
             <div className="space-y-4">
                 {leaderboardData.map((player, index) => (
                     <motion.div

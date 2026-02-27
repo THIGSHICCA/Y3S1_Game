@@ -9,6 +9,7 @@ import GameHUD from "@/components/GameHUD";
 import DifficultySelection from "@/components/DifficultySelection";
 import GameOverScreen from "@/components/GameOverScreen";
 import { fetchPuzzle, BananaPuzzle } from "@/api/bananaApi";
+import LeaderboardCard from "@/components/LeaderboardCard";
 
 type Difficulty = 'easy' | 'medium' | 'hard';
 
@@ -30,6 +31,7 @@ export default function PlayPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [gameStarted, setGameStarted] = useState(false);
     const [gameOver, setGameOver] = useState(false);
+    const [showLeaderboard, setShowLeaderboard] = useState(false);
 
     const loadNewPuzzle = useCallback(async () => {
         setIsLoading(true);
@@ -128,7 +130,7 @@ export default function PlayPage() {
                                 score={score}
                                 difficulty={difficulty}
                                 onRestart={restartGame}
-                                onLeaderboard={() => router.push('/leaderboard')}
+                                onLeaderboard={() => setShowLeaderboard(true)}
                             />
                         ) : (
                             <motion.div
@@ -152,6 +154,12 @@ export default function PlayPage() {
                     </AnimatePresence>
                 </div>
             </div>
+
+            <LeaderboardCard
+                isModal
+                isOpen={showLeaderboard}
+                onClose={() => setShowLeaderboard(false)}
+            />
         </main>
     );
 }

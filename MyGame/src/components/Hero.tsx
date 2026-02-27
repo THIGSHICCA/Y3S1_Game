@@ -6,13 +6,16 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Play, Trophy, Home, Info, LogIn } from "lucide-react";
 import TalkingBanana from "./Banana Character";
+import LeaderboardCard from "./LeaderboardCard";
 
 const Hero = () => {
     const router = useRouter();
+    const [showLeaderboard, setShowLeaderboard] = React.useState(false);
+
     const navLinks = [
         { name: "Home", href: "/", icon: Home },
         { name: "Play", href: "/play", icon: Play },
-        { name: "Leaderboard", href: "/leaderboard", icon: Trophy },
+        { name: "Leaders", onClick: () => setShowLeaderboard(true), icon: Trophy },
     ];
 
     return (
@@ -23,15 +26,28 @@ const Hero = () => {
                     <motion.div
                         key={link.name}
                         whileHover={{ scale: 1.1, x: 10 }}
-                        className="bg-white/20 backdrop-blur-xl p-4 rounded-2xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-yellow hover:border-white transition-all"
+                        className="bg-white/20 backdrop-blur-xl p-4 rounded-2xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-yellow hover:border-white transition-all overflow-hidden"
                     >
-                        <Link href={link.href} className="flex items-center space-x-4">
-                            <link.icon className="text-white group-hover:text-candy-purple" size={24} />
-                            <span className="text-white group-hover:text-candy-purple font-black uppercase text-sm tracking-widest">{link.name}</span>
-                        </Link>
+                        {link.href ? (
+                            <Link href={link.href} className="flex items-center space-x-4">
+                                <link.icon className="text-white group-hover:text-candy-purple" size={24} />
+                                <span className="text-white group-hover:text-candy-purple font-black uppercase text-sm tracking-widest">{link.name}</span>
+                            </Link>
+                        ) : (
+                            <button onClick={link.onClick} className="flex items-center space-x-4 w-full">
+                                <link.icon className="text-white group-hover:text-candy-purple" size={24} />
+                                <span className="text-white group-hover:text-candy-purple font-black uppercase text-sm tracking-widest">{link.name}</span>
+                            </button>
+                        )}
                     </motion.div>
                 ))}
             </div>
+
+            <LeaderboardCard
+                isModal
+                isOpen={showLeaderboard}
+                onClose={() => setShowLeaderboard(false)}
+            />
 
             <div className="absolute top-10 right-10 z-30 hidden lg:flex flex-col space-y-4 items-end">
                 <motion.div

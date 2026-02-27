@@ -1,16 +1,19 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Gamepad2, Trophy } from "lucide-react";
+import LeaderboardCard from "./LeaderboardCard";
 
 const Header = () => {
     const pathname = usePathname();
+    const [showLeaderboard, setShowLeaderboard] = useState(false);
 
     const navLinks = [
         { name: "Play", href: "/play", icon: <Gamepad2 size={20} /> },
-        { name: "Leaders", href: "/leaderboard", icon: <Trophy size={20} /> },
+        { name: "Leaders", type: "button", onClick: () => setShowLeaderboard(true), icon: <Trophy size={20} /> },
     ];
 
     // Hide on the landing page
@@ -43,24 +46,40 @@ const Header = () => {
                 <div className="flex items-center space-x-4 ml-6">
                     {navLinks.map((link) => (
                         <motion.div
-                            key={link.href}
+                            key={link.name}
                             initial={{ y: -50, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.1 }}
                         >
-                            <Link
-                                href={link.href}
-                                className={`pointer-events-auto flex items-center space-x-2 px-6 py-4 rounded-[2rem] border-4 transition-all font-black uppercase tracking-widest text-sm shadow-xl ${pathname === link.href
+                            {link.type === "button" ? (
+                                <button
+                                    onClick={link.onClick}
+                                    className={`pointer-events-auto flex items-center space-x-2 px-6 py-4 rounded-[2rem] border-4 transition-all font-black uppercase tracking-widest text-sm shadow-xl bg-white/10 backdrop-blur-xl border-white/30 text-white hover:bg-white/20 cursor-pointer`}
+                                >
+                                    {link.icon}
+                                    <span>{link.name}</span>
+                                </button>
+                            ) : (
+                                <Link
+                                    href={link.href!}
+                                    className={`pointer-events-auto flex items-center space-x-2 px-6 py-4 rounded-[2rem] border-4 transition-all font-black uppercase tracking-widest text-sm shadow-xl ${pathname === link.href
                                         ? 'bg-candy-yellow border-white text-white scale-105'
                                         : 'bg-white/10 backdrop-blur-xl border-white/30 text-white hover:bg-white/20'
-                                    }`}
-                            >
-                                {link.icon}
-                                <span>{link.name}</span>
-                            </Link>
+                                        }`}
+                                >
+                                    {link.icon}
+                                    <span>{link.name}</span>
+                                </Link>
+                            )}
                         </motion.div>
                     ))}
                 </div>
+
+                <LeaderboardCard
+                    isModal
+                    isOpen={showLeaderboard}
+                    onClose={() => setShowLeaderboard(false)}
+                />
             </div>
         </header>
     );
