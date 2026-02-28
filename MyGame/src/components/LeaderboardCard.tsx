@@ -2,8 +2,9 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Star } from "lucide-react";
+import { Star, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import AuthCard from "./AuthCard";
 
 const leaderboardData = [
@@ -22,6 +23,7 @@ interface LeaderboardCardProps {
 
 const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOpen = true, onClose }) => {
     const router = useRouter();
+    const { user, logout, isLoggedIn } = useAuth();
 
     return (
         <AuthCard
@@ -69,15 +71,38 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
                 ))}
             </div>
 
-            <div className="mt-8 bg-candy-purple/5 p-6 rounded-3xl border-4 border-dashed border-candy-purple/20 text-center">
+            <div className="mt-8 bg-candy-purple/5 p-6 rounded-3xl border-4 border-dashed border-candy-purple/20 text-center relative overflow-hidden">
                 <p className="text-candy-purple font-black text-sm uppercase mb-2">Your Current Rank</p>
-                <p className="text-gray-400 font-bold text-xs">Play more games to appear on the global leaderboard!</p>
-                <button
-                    onClick={() => router.push('/play')}
-                    className="mt-4 candy-button bg-candy-yellow text-white px-8 py-3 rounded-2xl font-black shadow-[0_6px_0_0_#f57f17] border-2 border-white inline-flex items-center space-x-2"
-                >
-                    <span>PLAY NOW</span>
-                </button>
+                <p className="text-gray-400 font-bold text-xs mb-4">Play more games to appear on the global leaderboard!</p>
+
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button
+                        onClick={() => router.push('/play')}
+                        className="candy-button bg-candy-yellow text-white px-8 py-3 rounded-2xl font-black shadow-[0_6px_0_0_#f57f17] border-2 border-white inline-flex items-center space-x-2 w-full sm:w-auto justify-center"
+                    >
+                        <span>PLAY NOW</span>
+                    </button>
+
+                    {isLoggedIn && (
+                        <button
+                            onClick={() => {
+                                logout();
+                                if (onClose) onClose();
+                            }}
+                            className="bg-candy-pink/10 hover:bg-candy-pink/20 text-candy-pink px-6 py-3 rounded-2xl font-black text-sm uppercase tracking-wider border-2 border-candy-pink/20 transition-all flex items-center space-x-2 w-full sm:w-auto justify-center"
+                        >
+                            <LogOut size={18} />
+                            <span>Log Out</span>
+                        </button>
+                    )}
+                </div>
+
+                {isLoggedIn && user && (
+                    <div className="mt-4 pt-4 border-t border-candy-purple/10">
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Logged in as</p>
+                        <p className="text-candy-purple font-black">{user.username}</p>
+                    </div>
+                )}
             </div>
         </AuthCard>
     );

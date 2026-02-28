@@ -15,7 +15,6 @@ const Hero = () => {
 
     const navLinks = [
         { name: "Home", href: "/", icon: Home },
-        { name: "Play", href: "/play", icon: Play },
         { name: "Leaders", onClick: () => setShowLeaderboard(true), icon: Trophy },
     ];
 
