@@ -101,9 +101,18 @@ export default function PlayPage() {
     if (!isLoggedIn) return null;
 
     return (
-        <main className="min-h-screen bg-[radial-gradient(circle_at_50%_50%,#7c4dff_0%,#4527a0_100%)] p-6 pt-24 relative overflow-hidden">
+        <main className="min-h-screen p-6 pt-24 relative overflow-hidden">
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0">
+                <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: 'url("/BackgroundImage/PlayBackground.jpeg")' }}
+                />
+                <div className="absolute inset-0  backdrop-blur-[1px]" />
+            </div>
+
             {/* Background elements */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-5">
                 <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 50, repeat: Infinity, ease: "linear" }}

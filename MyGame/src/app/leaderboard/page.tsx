@@ -26,24 +26,13 @@ export default function LeaderboardPage() {
                 animate={{ y: 0, opacity: 1 }}
                 className="w-full max-w-2xl"
             >
-                <div className="flex justify-between items-center mb-8">
+                <div className="flex justify-start items-center mb-8">
                     <button
                         onClick={() => router.push('/')}
                         className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-2xl border-2 border-white/20 transition-all"
                     >
                         <ArrowLeft size={24} />
                     </button>
-
-                    <div className="text-right">
-                        <p className="text-white/60 font-bold text-xs uppercase tracking-widest">Logged in as</p>
-                        <p className="text-candy-yellow font-black text-lg">{user?.username}</p>
-                        <button
-                            onClick={logout}
-                            className="text-candy-pink hover:text-white text-xs font-black uppercase tracking-tighter transition-colors"
-                        >
-                            Log Out
-                        </button>
-                    </div>
                 </div>
 
                 <LeaderboardCard />
