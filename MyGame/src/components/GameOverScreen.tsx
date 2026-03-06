@@ -8,13 +8,15 @@ interface GameOverScreenProps {
     difficulty: string | null;
     onRestart: () => void;
     onLeaderboard: () => void;
+    isLoggedIn: boolean;
 }
 
 const GameOverScreen: React.FC<GameOverScreenProps> = ({
     score,
     difficulty,
     onRestart,
-    onLeaderboard
+    onLeaderboard,
+    isLoggedIn
 }) => {
     return (
         <motion.div
@@ -42,9 +44,10 @@ const GameOverScreen: React.FC<GameOverScreenProps> = ({
                 </button>
                 <button
                     onClick={onLeaderboard}
-                    className="bg-white text-candy-purple border-4 border-candy-purple w-full py-5 rounded-3xl text-xl font-black hover:bg-gray-50 transition-all font-outfit"
+                    className="bg-white text-candy-purple border-4 border-candy-purple w-full py-5 rounded-3xl text-xl font-black hover:bg-gray-50 transition-all font-outfit flex items-center justify-center space-x-2"
                 >
-                    LEADERBOARD
+                    <span>LEADERBOARD</span>
+                    {!isLoggedIn && <span className="text-xs bg-candy-purple text-white px-2 py-1 rounded-lg">LOGIN REQ.</span>}
                 </button>
             </div>
         </motion.div>

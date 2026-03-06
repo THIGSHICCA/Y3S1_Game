@@ -46,17 +46,10 @@ export default function PlayPage() {
     }, []);
 
     useEffect(() => {
-        if (!isLoggedIn) {
-            router.push("/signin?returnUrl=/play");
-        }
-    }, [isLoggedIn, router]);
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            const savedHighScore = localStorage.getItem('bananaCrush_highScore');
-            if (savedHighScore) setHighScore(parseInt(savedHighScore));
-        }
-    }, [isLoggedIn]);
+        // High score is stored in localStorage for all users (guests and logged-in)
+        const savedHighScore = localStorage.getItem('bananaCrush_highScore');
+        if (savedHighScore) setHighScore(parseInt(savedHighScore));
+    }, []);
 
     const startGame = (level: Difficulty) => {
         setDifficulty(level);
@@ -98,7 +91,6 @@ export default function PlayPage() {
         setGameStarted(false);
     };
 
-    if (!isLoggedIn) return null;
 
     return (
         <main className="min-h-screen p-6 pt-24 relative overflow-hidden">
@@ -138,6 +130,7 @@ export default function PlayPage() {
                             <GameOverScreen
                                 score={score}
                                 difficulty={difficulty}
+                                isLoggedIn={isLoggedIn}
                                 onRestart={restartGame}
                                 onLeaderboard={() => setShowLeaderboard(true)}
                             />
