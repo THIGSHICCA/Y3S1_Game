@@ -9,18 +9,28 @@ import TalkingBanana from "./Banana Character";
 import LeaderboardCard from "./LeaderboardCard";
 import UserProfileModal from "./UserProfileModal";
 import { useSound } from "@/context/SoundContext";
+import { useAuth } from "@/context/AuthContext";
 import { User } from "lucide-react";
+
+const getInitials = (name: string | undefined) => {
+    if (!name) return "??";
+    const parts = name.split(/[_ \-]/).filter(Boolean);
+    if (parts.length >= 2) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+};
 
 const Hero = () => {
     const router = useRouter();
     const [showLeaderboard, setShowLeaderboard] = React.useState(false);
     const [showProfile, setShowProfile] = React.useState(false);
     const { isMuted, toggleMute } = useSound();
+    const { user, isLoggedIn } = useAuth();
 
     const navLinks = [
         { name: "Home", href: "/", icon: Home },
         { name: "Leaders", onClick: () => setShowLeaderboard(true), icon: Trophy },
-        { name: "Profile", onClick: () => setShowProfile(true), icon: User },
     ];
 
     return (
@@ -59,7 +69,33 @@ const Hero = () => {
                 onClose={() => setShowProfile(false)}
             />
 
-            <div className="absolute top-10 right-10 z-30 hidden lg:flex flex-col space-y-4 items-end">
+            <div className="absolute top-10 right-10 z-30 flex flex-col space-y-4 items-end">
+                {/* Profile Button */}
+                <motion.div
+                    whileHover={{ scale: 1.1, x: -10 }}
+                    onClick={() => setShowProfile(true)}
+                    className="bg-white/20 backdrop-blur-xl p-1 pr-6 rounded-full border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-yellow hover:border-white transition-all flex items-center space-x-3"
+                >
+                    <div className="w-10 h-10 bg-candy-purple rounded-full flex items-center justify-center border-2 border-white shadow-lg overflow-hidden">
+                        {isLoggedIn && user ? (
+                            <span className="font-black text-white text-xs">
+                                {getInitials(user.username)}
+                            </span>
+                        ) : (
+                            <User className="text-white" size={18} />
+                        )}
+                    </div>
+                    <div className="text-left">
+                        <p className="text-[8px] font-black text-white/70 uppercase tracking-widest leading-none">
+                            {isLoggedIn ? 'Player' : 'Guest'}
+                        </p>
+                        <p className="text-[10px] font-black text-white uppercase truncate max-w-[70px]">
+                            {isLoggedIn ? user?.username : 'Sign In'}
+                        </p>
+                    </div>
+                </motion.div>
+
+                {/* Sound Control */}
                 <motion.div
                     whileHover={{ scale: 1.1, x: -10 }}
                     onClick={toggleMute}
