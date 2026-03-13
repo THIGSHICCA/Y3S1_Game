@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Mail, Calendar, Trophy, Gamepad2, LogOut, ChevronRight, UserCircle } from "lucide-react";
+import { User, Mail, Calendar, Trophy, Gamepad2, LogOut, ChevronRight, UserCircle, Volume2, VolumeX, Settings } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { useSound } from "@/context/SoundContext";
 import AuthCard from "./AuthCard";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
@@ -16,6 +17,7 @@ interface UserProfileModalProps {
 
 const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) => {
     const { user, isLoggedIn, logout } = useAuth();
+    const { isMuted, volume, toggleMute, setVolume } = useSound();
     const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
 
     const handleLogout = () => {
@@ -81,6 +83,38 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                                 </div>
                                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Games Played</p>
                                 <p className="text-2xl font-black text-candy-purple">{user?.totalGames}</p>
+                            </div>
+                        </div>
+                        
+                        {/* Game Settings */}
+                        <div className="space-y-4 p-6 bg-candy-purple/5 rounded-[2rem] border-4 border-candy-purple/10">
+                            <div className="flex items-center space-x-3 mb-2">
+                                <Settings size={18} className="text-candy-purple" />
+                                <h4 className="text-xs font-black text-candy-purple uppercase tracking-widest">Game Settings</h4>
+                            </div>
+                            
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-3">
+                                    <button 
+                                        onClick={toggleMute}
+                                        className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${isMuted ? 'bg-red-500 text-white' : 'bg-white text-candy-purple border-2 border-candy-purple/20'}`}
+                                    >
+                                        {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                                    </button>
+                                    <span className="text-xs font-bold text-gray-500 uppercase">Sound {isMuted ? 'Off' : 'On'}</span>
+                                </div>
+                                <div className="flex-1 ml-6 flex items-center space-x-3">
+                                    <input 
+                                        type="range" 
+                                        min="0" 
+                                        max="1" 
+                                        step="0.1" 
+                                        value={volume}
+                                        onChange={(e) => setVolume(parseFloat(e.target.value))}
+                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-candy-purple"
+                                    />
+                                    <span className="text-[10px] font-black text-candy-purple w-8">{Math.round(volume * 100)}%</span>
+                                </div>
                             </div>
                         </div>
 

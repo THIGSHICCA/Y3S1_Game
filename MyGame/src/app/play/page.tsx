@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { useSound } from "@/context/SoundContext";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import GameBoard from "@/components/GameBoard";
@@ -21,6 +22,7 @@ const DIFFICULTY_SETTINGS = {
 
 export default function PlayPage() {
     const { isLoggedIn, user, updateStats } = useAuth();
+    const { playSound, updateIntensity } = useSound();
     const router = useRouter();
 
     const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
@@ -64,6 +66,8 @@ export default function PlayPage() {
         const points = 100 * (DIFFICULTY_SETTINGS[difficulty!].multiplier);
         const newScore = score + points;
         setScore(newScore);
+        playSound('correct');
+        updateIntensity(newScore);
         if (newScore > highScore) {
             setHighScore(newScore);
             if (isLoggedIn) {
@@ -74,6 +78,7 @@ export default function PlayPage() {
     };
 
     const onGameOver = useCallback((finalScore: number) => {
+        playSound('gameover');
         // Update user stats if logged in
         if (isLoggedIn) {
             updateStats(finalScore);
@@ -96,6 +101,7 @@ export default function PlayPage() {
     }, [isLoggedIn, user, updateStats]);
 
     const handleIncorrect = () => {
+        playSound('incorrect');
         const newLives = lives - 1;
         setLives(newLives);
         if (newLives <= 0) {

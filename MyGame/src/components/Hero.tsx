@@ -8,13 +8,14 @@ import { Play, Trophy, Home, Info, Volume2, VolumeX } from "lucide-react";
 import TalkingBanana from "./Banana Character";
 import LeaderboardCard from "./LeaderboardCard";
 import UserProfileModal from "./UserProfileModal";
+import { useSound } from "@/context/SoundContext";
 import { User } from "lucide-react";
 
 const Hero = () => {
     const router = useRouter();
     const [showLeaderboard, setShowLeaderboard] = React.useState(false);
     const [showProfile, setShowProfile] = React.useState(false);
-    const [isMuted, setIsMuted] = React.useState(false);
+    const { isMuted, toggleMute } = useSound();
 
     const navLinks = [
         { name: "Home", href: "/", icon: Home },
@@ -61,7 +62,7 @@ const Hero = () => {
             <div className="absolute top-10 right-10 z-30 hidden lg:flex flex-col space-y-4 items-end">
                 <motion.div
                     whileHover={{ scale: 1.1, x: -10 }}
-                    onClick={() => setIsMuted(!isMuted)}
+                    onClick={toggleMute}
                     className="bg-white/20 backdrop-blur-xl p-4 rounded-2xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-yellow hover:border-white transition-all"
                 >
                     <div className="flex items-center space-x-4">
