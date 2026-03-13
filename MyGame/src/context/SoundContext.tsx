@@ -96,6 +96,20 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setIntensity(newIntensity);
     };
 
+    useEffect(() => {
+        const handleGlobalClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            const isClickable = target.closest('button') || target.closest('a') || target.getAttribute('role') === 'button';
+            
+            if (isClickable && !isMuted) {
+                playSound('click');
+            }
+        };
+
+        window.addEventListener('click', handleGlobalClick);
+        return () => window.removeEventListener('click', handleGlobalClick);
+    }, [isMuted, volume]);
+
     return (
         <SoundContext.Provider value={{
             isMuted,
