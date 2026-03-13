@@ -66,16 +66,36 @@ export default function PlayPage() {
         setScore(newScore);
         if (newScore > highScore) {
             setHighScore(newScore);
-            localStorage.setItem('bananaCrush_highScore', newScore.toString());
+            if (isLoggedIn) {
+                localStorage.setItem('bananaCrush_highScore', newScore.toString());
+            }
         }
         loadNewPuzzle();
     };
+
+    const saveToLeaderboard = useCallback((finalScore: number) => {
+        if (!isLoggedIn || !user) return;
+
+        const leaderboard = JSON.parse(localStorage.getItem('bananaCrush_leaderboard') || '[]');
+        const newEntry = {
+            name: user.username,
+            score: finalScore,
+            avatar: "🍌",
+            rank: 0
+        };
+
+        leaderboard.push(newEntry);
+        // Sort and keep top 10 to prevent localStorage bloat
+        leaderboard.sort((a: any, b: any) => b.score - a.score);
+        localStorage.setItem('bananaCrush_leaderboard', JSON.stringify(leaderboard.slice(0, 10)));
+    }, [isLoggedIn, user]);
 
     const handleIncorrect = () => {
         const newLives = lives - 1;
         setLives(newLives);
         if (newLives <= 0) {
             setGameOver(true);
+            saveToLeaderboard(score);
         }
     };
 
@@ -94,7 +114,7 @@ export default function PlayPage() {
 
     return (
         <main className="min-h-screen p-6 pt-24 relative overflow-hidden">
-            {/* Background Image with Overlay */}
+
             <div className="absolute inset-0 z-0">
                 <div
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -103,7 +123,7 @@ export default function PlayPage() {
                 <div className="absolute inset-0  backdrop-blur-[1px]" />
             </div>
 
-            {/* Background elements */}
+
             <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-5">
                 <motion.div
                     animate={{ rotate: 360 }}

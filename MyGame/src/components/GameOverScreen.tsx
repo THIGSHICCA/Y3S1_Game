@@ -33,6 +33,11 @@ const GameOverScreen: React.FC<GameOverScreenProps> = ({
             <div className="bg-gray-50 rounded-3xl p-8 border-4 border-gray-100 mb-10">
                 <p className="text-gray-400 font-black text-xs uppercase tracking-widest mb-1">Final Score</p>
                 <p className="text-6xl font-black text-candy-purple">{score.toLocaleString()}</p>
+                {!isLoggedIn && (
+                    <p className="text-[10px] text-red-400 font-bold uppercase mt-4 animate-pulse">
+                        Sign in to save this score to the leaderboard!
+                    </p>
+                )}
             </div>
 
             <div className="flex flex-col space-y-4">

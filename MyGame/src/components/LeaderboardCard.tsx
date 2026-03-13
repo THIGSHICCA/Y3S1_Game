@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Star, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import AuthCard from "./AuthCard";
 
-const leaderboardData = [
+const DEFAULT_LEADERBOARD = [
     { rank: 1, name: "BananaKing", score: 15400, avatar: "🏆" },
     { rank: 2, name: "MonkeyD", score: 12200, avatar: "🥈" },
     { rank: 3, name: "SplitMaster", score: 9800, avatar: "🥉" },
@@ -24,6 +24,39 @@ interface LeaderboardCardProps {
 const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOpen = true, onClose }) => {
     const router = useRouter();
     const { user, logout, isLoggedIn } = useAuth();
+    const [leaderboard, setLeaderboard] = useState<any[]>([]);
+
+    useEffect(() => {
+        if (isOpen) {
+            const savedLeaderboard = JSON.parse(localStorage.getItem('bananaCrush_leaderboard') || '[]');
+
+            // Combine default data with saved data
+            const combined = [...savedLeaderboard, ...DEFAULT_LEADERBOARD];
+
+            // Sort by score and take unique names 
+            const uniquePlayers = combined.reduce((acc: any[], current) => {
+                const x = acc.find(item => item.name === current.name);
+                if (!x) {
+                    return acc.concat([current]);
+                } else {
+                    if (current.score > x.score) {
+                        return acc.map(item => item.name === current.name ? current : item);
+                    }
+                    return acc;
+                }
+            }, []);
+
+            uniquePlayers.sort((a: any, b: any) => b.score - a.score);
+
+            // top 5 ranks
+            const ranked = uniquePlayers.slice(0, 5).map((player, index) => ({
+                ...player,
+                rank: index + 1
+            }));
+
+            setLeaderboard(ranked);
+        }
+    }, [isOpen]);
 
     return (
         <AuthCard
@@ -49,9 +82,9 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
                         </button>
                     </div>
                 ) : (
-                    leaderboardData.map((player, index) => (
+                    leaderboard.map((player, index) => (
                         <motion.div
-                            key={player.name}
+                            key={`${player.name}-${index}`}
                             initial={{ x: -20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1 }}
@@ -70,7 +103,7 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
                                     </p>
                                     <div className="flex items-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                                         <Star size={10} className="mr-1 fill-candy-yellow text-candy-yellow" />
-                                        Active Player
+                                        {DEFAULT_LEADERBOARD.some(p => p.name === player.name) ? "Legendary Player" : "Active Player"}
                                     </div>
                                 </div>
                             </div>
