@@ -11,9 +11,11 @@ interface GameBoardProps {
     onTimeUp: () => void;
     isLoading: boolean;
     timeLimit: number;
+    gameMode?: 'banana' | 'math';
 }
 
-const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, onTimeUp, isLoading, timeLimit }) => {
+const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, onTimeUp, isLoading, timeLimit, gameMode = 'banana' }) => {
+    const isMath = gameMode === 'math';
     const [answer, setAnswer] = useState<string>("");
     const [isChecking, setIsChecking] = useState(false);
     const [feedback, setFeedback] = useState<'correct' | 'incorrect' | 'timeup' | null>(null);
@@ -79,8 +81,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
     const timerProgress = (timeLeft / timeLimit) * 100;
 
     return (
-        <div className="w-full max-w-4xl bg-white/90 backdrop-blur-xl rounded-[3rem] border-8 border-candy-yellow shadow-[0_20px_0_0_#f57f17] p-8 md:p-12 relative overflow-hidden">
-            {/* Timer Bar */}
+        <div className={`w-full max-w-4xl bg-white/90 backdrop-blur-xl rounded-[3rem] border-8 border-candy-yellow shadow-[0_20px_0_0_#f57f17] ${isMath ? 'p-6 md:p-8' : 'p-8 md:p-12'} relative overflow-hidden`}>
+
             <div className="absolute top-0 left-0 right-0 h-3 bg-gray-100 overflow-hidden">
                 <motion.div
                     initial={{ width: "100%" }}
@@ -90,7 +92,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                 />
             </div>
 
-            {/* Loading Overlay */}
+
             <AnimatePresence>
                 {isLoading && (
                     <motion.div
@@ -105,28 +107,47 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                         >
                             <RefreshCw size={64} className="text-candy-pink" />
                         </motion.div>
-                        <p className="mt-4 font-black text-candy-purple text-xl animate-pulse">CHASING BANANAS...</p>
+                        <p className="mt-4 font-black text-candy-purple text-xl animate-pulse">
+                            {isMath ? "PREPARING CHALLENGE..." : "CHASING BANANAS..."}
+                        </p>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                {/* Puzzle Image Container */}
+            <div className={`grid grid-cols-1 lg:grid-cols-2 ${isMath ? 'gap-6' : 'gap-12'} items-center`}>
+
                 <div className="relative">
                     <motion.div
                         layout
                         className="relative aspect-video rounded-3xl overflow-hidden border-4 border-candy-yellow/20 bg-gray-50 flex items-center justify-center p-4 shadow-inner"
                     >
                         <AnimatePresence mode="wait">
-                            <motion.img
-                                key={puzzle.question}
-                                initial={{ scale: 0.9, opacity: 0, rotate: -2 }}
-                                animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                                exit={{ scale: 1.1, opacity: 0, rotate: 2 }}
-                                src={puzzle.question}
-                                alt="Banana Puzzle"
-                                className="max-h-full max-w-full object-contain drop-shadow-2xl"
-                            />
+                            {puzzle.question.startsWith('http') || puzzle.question.startsWith('/') ? (
+                                <motion.img
+                                    key={puzzle.question}
+                                    initial={{ scale: 0.9, opacity: 0, rotate: -2 }}
+                                    animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                                    exit={{ scale: 1.1, opacity: 0, rotate: 2 }}
+                                    src={puzzle.question}
+                                    alt="Banana Puzzle"
+                                    className="max-h-full max-w-full object-contain drop-shadow-2xl"
+                                />
+                            ) : (
+                                <motion.div
+                                    key={puzzle.question}
+                                    initial={{ scale: 0.5, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    exit={{ scale: 1.5, opacity: 0 }}
+                                    className="text-center p-8"
+                                >
+                                    <div className="bg-white rounded-full p-4 mb-4 inline-block shadow-sm">
+                                        <span className="text-4xl">🧠</span>
+                                    </div>
+                                    <h3 className="text-5xl md:text-7xl font-black text-candy-purple text-shadow-bubbly">
+                                        {puzzle.question}
+                                    </h3>
+                                </motion.div>
+                            )}
                         </AnimatePresence>
 
                         {/* Feedback Overlay */}
@@ -151,7 +172,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                         </AnimatePresence>
                     </motion.div>
 
-                    {/* Timer Circle - Overlay on Image */}
+
                     <div className="absolute -top-6 -right-6 flex items-center justify-center">
                         <div className="relative w-20 h-20 bg-white rounded-full border-4 border-candy-yellow shadow-xl flex items-center justify-center">
                             <Timer size={24} className={`absolute top-2 ${timerColor}`} />
@@ -162,40 +183,59 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                     </div>
                 </div>
 
-                {/* Controls Container */}
+
                 <div className="flex flex-col space-y-8">
                     <div className="text-center lg:text-left">
-                        <h2 className="text-3xl md:text-4xl font-black text-candy-purple mb-2 uppercase">What's the answer?</h2>
-                        <p className="text-gray-500 font-bold uppercase tracking-widest text-sm">Be quick! The clock is ticking!</p>
+                        <h2 className={`${isMath ? 'text-2xl md:text-3xl' : 'text-3xl md:text-4xl'} font-black text-candy-purple ${isMath ? 'mb-1' : 'mb-2'} uppercase`}>What's the answer?</h2>
+                        <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Be quick! The clock is ticking!</p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-8">
-                        {/* Display Current Input */}
-                        <div className="bg-gray-100 rounded-3xl p-6 border-4 border-gray-200 shadow-inner text-center relative overflow-hidden">
-                            <span className="text-6xl font-black text-candy-pink drop-shadow-sm min-h-[1.2em] block relative z-10">
-                                {answer || "?"}
-                            </span>
-                        </div>
+                        {isMath ? (
+                            <div className="relative group">
+                                <input
+                                    autoFocus
+                                    type="number"
+                                    value={answer}
+                                    onChange={(e) => setAnswer(e.target.value)}
+                                    placeholder="?"
+                                    className="w-full bg-gray-100 rounded-3xl p-6 md:p-8 border-4 border-gray-200 shadow-inner text-center text-5xl md:text-6xl font-black text-candy-pink focus:border-candy-purple focus:ring-4 focus:ring-candy-purple/10 outline-none transition-all placeholder:text-gray-300"
+                                    disabled={timeLeft === 0 || isChecking}
+                                />
+                                <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-20 group-focus-within:opacity-100 transition-opacity">
+                                    <Send size={32} className="text-candy-purple" />
+                                </div>
+                            </div>
+                        ) : (
+                            <>
 
-                        {/* Numeric Keypad */}
-                        <div className="grid grid-cols-5 gap-3">
-                            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-                                <motion.button
-                                    key={num}
-                                    type="button"
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    disabled={timeLeft === 0}
-                                    onClick={() => handleNumberClick(num)}
-                                    className={`aspect-square rounded-2xl flex items-center justify-center text-2xl font-black transition-all border-4 ${parseInt(answer) === num
-                                            ? 'bg-candy-yellow text-white border-white scale-110 shadow-lg'
-                                            : 'bg-white text-candy-purple border-candy-yellow/30 hover:border-candy-yellow'
-                                        } ${timeLeft === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                >
-                                    {num}
-                                </motion.button>
-                            ))}
-                        </div>
+                                <div className="bg-gray-100 rounded-3xl p-6 border-4 border-gray-200 shadow-inner text-center relative overflow-hidden">
+                                    <span className="text-6xl font-black text-candy-pink drop-shadow-sm min-h-[1.2em] block relative z-10">
+                                        {answer || "?"}
+                                    </span>
+                                </div>
+
+                                {/* Numeric Keypad */}
+                                <div className="grid grid-cols-5 gap-3">
+                                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+                                        <motion.button
+                                            key={num}
+                                            type="button"
+                                            whileHover={{ scale: 1.1 }}
+                                            whileTap={{ scale: 0.9 }}
+                                            disabled={timeLeft === 0}
+                                            onClick={() => handleNumberClick(num)}
+                                            className={`aspect-square rounded-2xl flex items-center justify-center text-2xl font-black transition-all border-4 ${parseInt(answer) === num
+                                                ? 'bg-candy-yellow text-white border-white scale-110 shadow-lg'
+                                                : 'bg-white text-candy-purple border-candy-yellow/30 hover:border-candy-yellow'
+                                                } ${timeLeft === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                        >
+                                            {num}
+                                        </motion.button>
+                                    ))}
+                                </div>
+                            </>
+                        )}
 
                         <motion.button
                             whileHover={{ scale: 1.05 }}

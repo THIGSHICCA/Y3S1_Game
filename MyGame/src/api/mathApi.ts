@@ -6,12 +6,10 @@ export interface MathPuzzle {
 export type MathDifficulty = 'easy' | 'medium' | 'hard';
 
 export const fetchMathPuzzle = async (difficulty: MathDifficulty): Promise<MathPuzzle> => {
-    // We simulate an API call, but generate the math problem locally for instant response
-    // and reliability, while adhering to the interface the user requested.
-    
+
     let a, b, operator;
     const operators = ['+', '-', '*'];
-    
+
     if (difficulty === 'easy') {
         a = Math.floor(Math.random() * 10) + 1;
         b = Math.floor(Math.random() * 10) + 1;

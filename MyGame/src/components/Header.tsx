@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Gamepad2, Trophy, User } from "lucide-react";
+import { Gamepad2, Trophy, User, Brain } from "lucide-react";
 import LeaderboardCard from "./LeaderboardCard";
 import UserProfileModal from "./UserProfileModal";
 import { useAuth } from "@/context/AuthContext";
@@ -90,7 +90,6 @@ const Header = () => {
                     </div>
                 </div>
 
-                {/* Profile Button on Right */}
                 <motion.div
                     initial={{ y: -50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}

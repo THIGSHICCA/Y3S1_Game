@@ -180,6 +180,7 @@ export default function PlayPage() {
                                         onTimeUp={handleTimeUp}
                                         isLoading={isLoading}
                                         timeLimit={DIFFICULTY_SETTINGS[difficulty].time}
+                                        gameMode="banana"
                                     />
                                 )}
                             </motion.div>
