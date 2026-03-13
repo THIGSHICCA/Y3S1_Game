@@ -120,7 +120,7 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
                 )}
             </div>
 
-            <div className="mt-8 bg-candy-purple/5 p-6 rounded-3xl border-4 border-dashed border-candy-purple/20 text-center relative overflow-hidden">
+            <div className="mt-4 bg-candy-purple/5 p-4 rounded-3xl border-4 border-dashed border-candy-purple/20 text-center relative overflow-hidden">
                 <p className="text-candy-purple font-black text-sm uppercase mb-2">Your Current Rank</p>
                 <p className="text-gray-400 font-bold text-xs mb-4">Play more games to appear on the global leaderboard!</p>
 

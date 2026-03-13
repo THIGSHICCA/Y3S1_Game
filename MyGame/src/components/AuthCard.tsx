@@ -18,7 +18,7 @@ const AuthCard: React.FC<AuthCardProps> = ({ title, subtitle, children, onClose,
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 40 }}
             transition={{ type: "spring", damping: 15 }}
-            className="relative w-full max-w-md bg-white rounded-[3rem] border-8 border-candy-yellow shadow-[0_20px_0_0_#f57f17]"
+            className="relative w-full max-w-md bg-white rounded-[3rem] border-8 border-candy-yellow shadow-[0_20px_0_0_#f57f17] flex flex-col max-h-[90vh] overflow-hidden"
         >
 
             {onClose && (
@@ -30,7 +30,7 @@ const AuthCard: React.FC<AuthCardProps> = ({ title, subtitle, children, onClose,
                 </button>
             )}
 
-            <div className="rounded-[2.5rem] overflow-hidden">
+            <div className="rounded-[2.5rem] flex flex-col h-full overflow-hidden">
                 {/* Header */}
                 <div className="bg-candy-pink p-8 text-center text-white relative">
                     <h2 className="text-4xl font-black drop-shadow-[0_4px_0_#ad1457] text-shadow-bubbly uppercase tracking-wider">
@@ -40,7 +40,7 @@ const AuthCard: React.FC<AuthCardProps> = ({ title, subtitle, children, onClose,
                 </div>
 
                 {/* Content (Form and Actions) */}
-                <div className="p-8 space-y-6">
+                <div className="p-8 space-y-6 flex-1 overflow-y-auto min-h-0">
                     {children}
                 </div>
             </div>
