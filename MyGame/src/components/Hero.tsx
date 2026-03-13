@@ -7,15 +7,19 @@ import { useRouter } from "next/navigation";
 import { Play, Trophy, Home, Info, Volume2, VolumeX } from "lucide-react";
 import TalkingBanana from "./Banana Character";
 import LeaderboardCard from "./LeaderboardCard";
+import UserProfileModal from "./UserProfileModal";
+import { User } from "lucide-react";
 
 const Hero = () => {
     const router = useRouter();
     const [showLeaderboard, setShowLeaderboard] = React.useState(false);
+    const [showProfile, setShowProfile] = React.useState(false);
     const [isMuted, setIsMuted] = React.useState(false);
 
     const navLinks = [
         { name: "Home", href: "/", icon: Home },
         { name: "Leaders", onClick: () => setShowLeaderboard(true), icon: Trophy },
+        { name: "Profile", onClick: () => setShowProfile(true), icon: User },
     ];
 
     return (
@@ -49,6 +53,11 @@ const Hero = () => {
                 onClose={() => setShowLeaderboard(false)}
             />
 
+            <UserProfileModal
+                isOpen={showProfile}
+                onClose={() => setShowProfile(false)}
+            />
+
             <div className="absolute top-10 right-10 z-30 hidden lg:flex flex-col space-y-4 items-end">
                 <motion.div
                     whileHover={{ scale: 1.1, x: -10 }}
@@ -68,7 +77,7 @@ const Hero = () => {
                 </motion.div>
             </div>
 
-            {/* Background Image */}
+
             <div className="absolute inset-0 z-0">
                 <div
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat"

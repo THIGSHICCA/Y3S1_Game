@@ -18,7 +18,7 @@ const AuthCard: React.FC<AuthCardProps> = ({ title, subtitle, children, onClose,
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 40 }}
             transition={{ type: "spring", damping: 15 }}
-            className="relative w-full max-w-md bg-white rounded-[3rem] border-8 border-candy-yellow shadow-[0_20px_0_0_#f57f17] flex flex-col max-h-[90vh] overflow-hidden"
+            className="relative w-full max-w-md bg-white rounded-[3rem] border-8 border-candy-yellow shadow-[0_20px_0_0_#f57f17] flex flex-col max-h-[90vh]"
         >
 
             {onClose && (

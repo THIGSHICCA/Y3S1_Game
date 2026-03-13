@@ -20,7 +20,7 @@ const DIFFICULTY_SETTINGS = {
 };
 
 export default function PlayPage() {
-    const { isLoggedIn, user } = useAuth();
+    const { isLoggedIn, user, updateStats } = useAuth();
     const router = useRouter();
 
     const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
@@ -46,7 +46,7 @@ export default function PlayPage() {
     }, []);
 
     useEffect(() => {
-        // High score is stored in localStorage for all users (guests and logged-in)
+        // High score is stored in localStorage for all users 
         const savedHighScore = localStorage.getItem('bananaCrush_highScore');
         if (savedHighScore) setHighScore(parseInt(savedHighScore));
     }, []);
@@ -73,7 +73,13 @@ export default function PlayPage() {
         loadNewPuzzle();
     };
 
-    const saveToLeaderboard = useCallback((finalScore: number) => {
+    const onGameOver = useCallback((finalScore: number) => {
+        // Update user stats if logged in
+        if (isLoggedIn) {
+            updateStats(finalScore);
+        }
+
+        // Save to leaderboard for registered users
         if (!isLoggedIn || !user) return;
 
         const leaderboard = JSON.parse(localStorage.getItem('bananaCrush_leaderboard') || '[]');
@@ -85,17 +91,16 @@ export default function PlayPage() {
         };
 
         leaderboard.push(newEntry);
-        // Sort and keep top 10 to prevent localStorage bloat
         leaderboard.sort((a: any, b: any) => b.score - a.score);
         localStorage.setItem('bananaCrush_leaderboard', JSON.stringify(leaderboard.slice(0, 10)));
-    }, [isLoggedIn, user]);
+    }, [isLoggedIn, user, updateStats]);
 
     const handleIncorrect = () => {
         const newLives = lives - 1;
         setLives(newLives);
         if (newLives <= 0) {
             setGameOver(true);
-            saveToLeaderboard(score);
+            onGameOver(score);
         }
     };
 

@@ -4,16 +4,19 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Gamepad2, Trophy } from "lucide-react";
+import { Gamepad2, Trophy, User } from "lucide-react";
 import LeaderboardCard from "./LeaderboardCard";
+import UserProfileModal from "./UserProfileModal";
 
 const Header = () => {
     const pathname = usePathname();
     const [showLeaderboard, setShowLeaderboard] = useState(false);
+    const [showProfile, setShowProfile] = useState(false);
 
     const navLinks = [
         { name: "Play", href: "/play", icon: <Gamepad2 size={20} /> },
         { name: "Leaders", type: "button", onClick: () => setShowLeaderboard(true), icon: <Trophy size={20} /> },
+        { name: "Profile", type: "button", onClick: () => setShowProfile(true), icon: <User size={20} /> },
     ];
 
     // Hide on the landing page
@@ -79,6 +82,11 @@ const Header = () => {
                     isModal
                     isOpen={showLeaderboard}
                     onClose={() => setShowLeaderboard(false)}
+                />
+
+                <UserProfileModal
+                    isOpen={showProfile}
+                    onClose={() => setShowProfile(false)}
                 />
             </div>
         </header>
