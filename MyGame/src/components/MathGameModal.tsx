@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+
 import { useAuth } from "@/context/AuthContext";
 import { useSound } from "@/context/SoundContext";
 import GameBoard from "./GameBoard";
@@ -111,53 +111,44 @@ const MathGameModal: React.FC<MathGameModalProps> = ({ isOpen, onClose }) => {
     return (
         <AnimatePresence>
             {isOpen && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
-                >
-                    {/* Backdrop */}
+                <>
+                    {/* Full-Screen Math Game */}
+
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onClick={onClose}
-                        className="absolute inset-0 bg-candy-purple/40 backdrop-blur-xl"
-                    />
-
-                    {/* Modal Content */}
-                    <motion.div
-                        initial={{ scale: 0.9, y: 20, opacity: 0 }}
-                        animate={{ scale: 1, y: 0, opacity: 1 }}
-                        exit={{ scale: 0.9, y: 20, opacity: 0 }}
-                        className="relative w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] bg-white/10 rounded-[1.5rem] sm:rounded-[3rem] shadow-2xl overflow-hidden flex flex-col"
+                        className="fixed inset-0 z-[110] bg-white flex flex-col overflow-hidden"
                     >
-                        {/* Background Deco */}
-                        <div className="absolute inset-0 z-0 pointer-events-none">
-                            <div className="absolute top-0 left-0 w-full h-full bg-[url('/BackgroundImage/PlayBackground.jpeg')] bg-cover bg-center opacity-30" />
-                            <div className="absolute inset-0 bg-gradient-to-br from-candy-purple/20 to-transparent" />
+
+                        {/* Background Layer (Matching PlayPage) */}
+                        <div className="absolute inset-0 z-0">
+                            <div
+                                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                                style={{ backgroundImage: 'url("/BackgroundImage/PlayBackground.jpeg")' }}
+                            />
+                            <div className="absolute inset-0 backdrop-blur-[2px] bg-candy-purple/10" />
                         </div>
 
-                        <div className="relative z-10 p-4 md:p-6 text-center border-b border-white/10">
-                            <div className="flex flex-col items-center justify-center">
-                                <h2 className="text-xl md:text-3xl font-black text-white uppercase tracking-tighter text-shadow-bubbly flex items-center justify-center gap-2 sm:gap-3">
-                                    <span className="bg-white/20 p-1.5 sm:p-2 rounded-xl text-lg md:text-2xl">🧠</span>
-                                    Improve Math
-                                </h2>
-                                <p className="text-white/60 font-bold uppercase tracking-widest text-[8px] sm:text-[9px] mt-1">Mental Arithmetic Challenge</p>
-                            </div>
-                            <button
-                                onClick={onClose}
-                                className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white/10 hover:bg-red-500 text-white rounded-xl sm:rounded-2xl flex items-center justify-center transition-all border sm:border-2 border-white/20 hover:border-white shadow-lg z-20"
-                            >
-                                <X size={16} strokeWidth={3} className="sm:size-5 md:size-6" />
-                            </button>
+                        {/* Decorative Circles (Matching PlayPage) */}
+                        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+                            <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+                                className="absolute -top-1/2 -left-1/2 w-full h-full border-[100px] border-white/20 rounded-full"
+                            />
+                            <motion.div
+                                animate={{ rotate: -360 }}
+                                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                                className="absolute -bottom-1/2 -right-1/2 w-full h-full border-[60px] border-white/10 rounded-full"
+                            />
                         </div>
 
                         {/* Main Game Area */}
-                        <div className="relative z-10 flex-1 overflow-y-auto custom-scrollbar p-4 md:p-6">
-                            <div className="max-w-4xl mx-auto w-full">
+                        <div className="relative z-10 flex-1 overflow-y-auto custom-scrollbar p-2 sm:p-4 pt-10 sm:pt-12 md:pt-14 flex flex-col">
+
+
+                            <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col">
                                 <GameHUD
                                     score={score}
                                     lives={lives}
@@ -167,10 +158,10 @@ const MathGameModal: React.FC<MathGameModalProps> = ({ isOpen, onClose }) => {
                                     onQuit={onClose}
                                 />
 
-                                <div className="flex justify-center mt-4 md:mt-6">
+                                <div className="flex-1 flex items-center justify-center mt-4 md:mt-2">
                                     <AnimatePresence mode="wait">
                                         {!gameStarted && !gameOver ? (
-                                            <DifficultySelection onSelect={startGame} isInline />
+                                            <DifficultySelection onSelect={startGame} />
                                         ) : gameOver ? (
                                             <GameOverScreen
                                                 score={score}
@@ -204,7 +195,7 @@ const MathGameModal: React.FC<MathGameModalProps> = ({ isOpen, onClose }) => {
                             </div>
                         </div>
                     </motion.div>
-                </motion.div>
+                </>
             )}
         </AnimatePresence>
     );

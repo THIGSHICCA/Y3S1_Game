@@ -25,8 +25,18 @@ const GameHUD: React.FC<GameHUDProps> = ({
 }) => {
     return (
         <div className="flex flex-row md:grid md:grid-cols-3 items-center justify-between mb-2 sm:mb-4 gap-2 sm:gap-4 w-full px-2 sm:px-4">
-            {/* Left: Lives */}
-            <div className="flex justify-start order-2 md:order-1 flex-1 md:flex-none md:pl-32">
+            {/* Left: Quit and Lives */}
+            <div className="flex items-center space-x-2 sm:space-x-4 justify-start order-2 md:order-1 flex-1 md:flex-none">
+                <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={onQuit}
+                    className="bg-white/90 backdrop-blur-md rounded-xl sm:rounded-2xl p-2 sm:p-3 border-2 sm:border-4 border-candy-purple text-candy-purple shadow-md sm:shadow-lg hover:bg-candy-purple hover:text-white transition-all flex items-center justify-center group"
+                    title="Quit Game"
+                >
+                    <ArrowLeft size={16} strokeWidth={3} className="sm:size-5 group-hover:scale-110 transition-transform" />
+                </motion.button>
+
                 <AnimatePresence>
                     {gameStarted && !gameOver && (
                         <motion.div
@@ -52,6 +62,7 @@ const GameHUD: React.FC<GameHUDProps> = ({
                     )}
                 </AnimatePresence>
             </div>
+
 
             {/* Center: Score */}
             <div className="flex justify-center order-1 md:order-2 flex-grow sm:flex-grow-0">
