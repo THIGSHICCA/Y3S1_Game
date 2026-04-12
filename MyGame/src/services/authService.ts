@@ -3,8 +3,11 @@ import {
     signInWithEmailAndPassword,
     signOut as firebaseSignOut,
     updateProfile,
+    GoogleAuthProvider,
+    FacebookAuthProvider,
+    signInWithPopup,
 } from "firebase/auth";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 
 /* ──────────────────────────────────────────────
@@ -118,4 +121,49 @@ export const signIn = async (email: string, password: string) => {
  */
 export const signOut = async () => {
     return firebaseSignOut(auth);
+};
+
+/* ──────────────────────────────────────────────
+ *  Social Auth functions
+ * ────────────────────────────────────────────── */
+
+/**
+ * Handle user data creation for social logins.
+ * Only creates a document if one doesn't already exist.
+ */
+const syncSocialUser = async (user: any) => {
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+        await setDoc(userRef, {
+            email: user.email,
+            username: user.displayName || "Gamer",
+            bananaHighScore: 0,
+            mathHighScore: 0,
+            totalGames: 0,
+            joinDate: new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" }),
+            createdAt: serverTimestamp(),
+        });
+    }
+};
+
+/**
+ * Sign in with Google Popup.
+ */
+export const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    await syncSocialUser(result.user);
+    return result;
+};
+
+/**
+ * Sign in with Facebook Popup.
+ */
+export const signInWithFacebook = async () => {
+    const provider = new FacebookAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    await syncSocialUser(result.user);
+    return result;
 };

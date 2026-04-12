@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { getUserData, UserData, updateUserStats } from "@/services/userService";
-import { signIn, signOut, signUp } from "@/services/authService";
+import { signIn, signOut, signUp, signInWithGoogle, signInWithFacebook } from "@/services/authService";
 
 interface AuthContextType {
     user: UserData | null;
@@ -13,6 +13,8 @@ interface AuthContextType {
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string, username: string) => Promise<void>;
+    loginWithGoogle: () => Promise<void>;
+    loginWithFacebook: () => Promise<void>;
     logout: () => Promise<void>;
     updateStats: (score: number, game?: "banana" | "math") => Promise<void>;
 }
@@ -56,6 +58,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(data);
     };
 
+    const loginWithGoogle = async () => {
+        const result = await signInWithGoogle();
+        const data = await getUserData(result.user.uid);
+        setUser(data);
+    };
+
+    const loginWithFacebook = async () => {
+        const result = await signInWithFacebook();
+        const data = await getUserData(result.user.uid);
+        setUser(data);
+    };
+
     const logout = async () => {
         await signOut();
         setUser(null);
@@ -72,7 +86,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     return (
-        <AuthContext.Provider value={{ user, firebaseUser, isLoggedIn, isLoading, login, register, logout, updateStats }}>
+        <AuthContext.Provider value={{ 
+            user, 
+            firebaseUser, 
+            isLoggedIn, 
+            isLoading, 
+            login, 
+            register, 
+            loginWithGoogle,
+            loginWithFacebook,
+            logout, 
+            updateStats 
+        }}>
             {children}
         </AuthContext.Provider>
     );
