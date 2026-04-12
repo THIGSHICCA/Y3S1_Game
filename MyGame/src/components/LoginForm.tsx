@@ -16,21 +16,33 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegister }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const { login } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        login(email);
-
-        const returnUrl = searchParams.get("returnUrl") || "/";
-
-        if (onSuccess) {
-            onSuccess();
-        } else {
-            router.push(returnUrl);
+        setError("");
+        setIsSubmitting(true);
+        try {
+            await login(email, password);
+            const returnUrl = searchParams.get("returnUrl") || "/";
+            if (onSuccess) {
+                onSuccess();
+            } else {
+                router.push(returnUrl);
+            }
+        } catch (err: unknown) {
+            const code = (err as { code?: string })?.code;
+            if (code === "auth/user-not-found" || code === "auth/wrong-password" || code === "auth/invalid-credential") {
+                setError("Invalid email or password.");
+            } else {
+                setError("Something went wrong. Please try again.");
+            }
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -96,13 +108,20 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegister }) 
                 </button>
             </div>
 
+            {error && (
+                <p className="text-red-500 font-bold text-sm text-center bg-red-50 rounded-xl px-4 py-2 border border-red-200">
+                    {error}
+                </p>
+            )}
+
             <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="candy-button w-full bg-candy-pink text-white py-5 rounded-2xl text-xl font-black shadow-[0_8px_0_0_#ad1457] active:shadow-none transition-all flex items-center justify-center space-x-3 border-4 border-white"
+                disabled={isSubmitting}
+                className="candy-button w-full bg-candy-pink text-white py-5 rounded-2xl text-xl font-black shadow-[0_8px_0_0_#ad1457] active:shadow-none transition-all flex items-center justify-center space-x-3 border-4 border-white disabled:opacity-70 disabled:cursor-not-allowed"
             >
-                <span>LOGIN NOW</span>
+                <span>{isSubmitting ? "LOGGING IN..." : "LOGIN NOW"}</span>
                 <ArrowRight size={24} />
             </motion.button>
 

@@ -68,23 +68,32 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-candy-pink/5 p-6 rounded-[2rem] border-4 border-candy-pink/10 text-center group hover:border-candy-pink/30 transition-all">
+                        <div className="grid grid-cols-3 gap-3">
+                            <div className="bg-candy-yellow/5 p-5 rounded-[2rem] border-4 border-candy-yellow/10 text-center group hover:border-candy-yellow/30 transition-all">
+                                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 shadow-sm border-2 border-candy-yellow/10">
+                                    <Trophy size={20} className="text-candy-yellow" />
+                                </div>
+                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Banana Best</p>
+                                <p className="text-xl font-black text-candy-yellow">{(user?.bananaHighScore ?? 0).toLocaleString()}</p>
+                            </div>
+
+                            <div className="bg-candy-pink/5 p-5 rounded-[2rem] border-4 border-candy-pink/10 text-center group hover:border-candy-pink/30 transition-all">
                                 <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 shadow-sm border-2 border-candy-pink/10">
                                     <Trophy size={20} className="text-candy-pink" />
                                 </div>
-                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">High Score</p>
-                                <p className="text-2xl font-black text-candy-pink">{user?.highScore.toLocaleString()}</p>
+                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Math Best</p>
+                                <p className="text-xl font-black text-candy-pink">{(user?.mathHighScore ?? 0).toLocaleString()}</p>
                             </div>
 
-                            <div className="bg-candy-purple/5 p-6 rounded-[2rem] border-4 border-candy-purple/10 text-center group hover:border-candy-purple/30 transition-all">
+                            <div className="bg-candy-purple/5 p-5 rounded-[2rem] border-4 border-candy-purple/10 text-center group hover:border-candy-purple/30 transition-all">
                                 <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 shadow-sm border-2 border-candy-purple/10">
                                     <Gamepad2 size={20} className="text-candy-purple" />
                                 </div>
-                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Games Played</p>
-                                <p className="text-2xl font-black text-candy-purple">{user?.totalGames}</p>
+                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Games</p>
+                                <p className="text-xl font-black text-candy-purple">{user?.totalGames ?? 0}</p>
                             </div>
                         </div>
+
 
 
                         <div className="space-y-4 p-6 bg-candy-purple/5 rounded-[2rem] border-4 border-candy-purple/10">

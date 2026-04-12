@@ -1,92 +1,78 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-
-interface User {
-    email: string;
-    username: string;
-    highScore: number;
-    totalGames: number;
-    joinDate: string;
-}
+import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { getUserData, UserData, updateUserStats } from "@/services/userService";
+import { signIn, signOut, signUp } from "@/services/authService";
 
 interface AuthContextType {
-    user: User | null;
+    user: UserData | null;
+    firebaseUser: FirebaseUser | null;
     isLoggedIn: boolean;
-    login: (email: string) => void;
-    logout: () => void;
-    updateStats: (score: number) => void;
+    isLoading: boolean;
+    login: (email: string, password: string) => Promise<void>;
+    register: (email: string, password: string, username: string) => Promise<void>;
+    logout: () => Promise<void>;
+    updateStats: (score: number, game?: "banana" | "math") => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserData | null>(null);
+    const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
+    // Listen to Firebase Auth state changes
     useEffect(() => {
-        const savedUser = localStorage.getItem("auth_user");
-        if (savedUser) {
-            setUser(JSON.parse(savedUser));
-            setIsLoggedIn(true);
-        }
+        const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
+            if (fbUser) {
+                setFirebaseUser(fbUser);
+                const data = await getUserData(fbUser.uid);
+                setUser(data);
+                setIsLoggedIn(true);
+            } else {
+                setFirebaseUser(null);
+                setUser(null);
+                setIsLoggedIn(false);
+            }
+            setIsLoading(false);
+        });
+
+        return () => unsubscribe();
     }, []);
 
-    const login = (email: string) => {
-        const username = email.split("@")[0];
-        const newUser: User = { 
-            email, 
-            username,
-            highScore: 0,
-            totalGames: 0,
-            joinDate: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-        };
-        
-        // Check if we have existing stats for this email in local storage
-        const savedStats = localStorage.getItem(`stats_${email}`);
-        if (savedStats) {
-            const stats = JSON.parse(savedStats);
-            newUser.highScore = stats.highScore || 0;
-            newUser.totalGames = stats.totalGames || 0;
-            newUser.joinDate = stats.joinDate || newUser.joinDate;
-        }
-
-        setUser(newUser);
-        setIsLoggedIn(true);
-        localStorage.setItem("auth_user", JSON.stringify(newUser));
-        localStorage.setItem(`stats_${email}`, JSON.stringify({
-            highScore: newUser.highScore,
-            totalGames: newUser.totalGames,
-            joinDate: newUser.joinDate
-        }));
+    const login = async (email: string, password: string) => {
+        const credential = await signIn(email, password);
+        const data = await getUserData(credential.user.uid);
+        setUser(data);
     };
 
-    const logout = () => {
+    const register = async (email: string, password: string, username: string) => {
+        const credential = await signUp(email, password, username);
+        const data = await getUserData(credential.user.uid);
+        setUser(data);
+    };
+
+    const logout = async () => {
+        await signOut();
         setUser(null);
+        setFirebaseUser(null);
         setIsLoggedIn(false);
-        localStorage.removeItem("auth_user");
     };
 
-    const updateStats = (score: number) => {
-        if (!user) return;
-
-        const updatedUser = {
-            ...user,
-            totalGames: user.totalGames + 1,
-            highScore: Math.max(user.highScore, score)
-        };
-
-        setUser(updatedUser);
-        localStorage.setItem("auth_user", JSON.stringify(updatedUser));
-        localStorage.setItem(`stats_${user.email}`, JSON.stringify({
-            highScore: updatedUser.highScore,
-            totalGames: updatedUser.totalGames,
-            joinDate: updatedUser.joinDate
-        }));
+    const updateStats = async (score: number, game: "banana" | "math" = "banana") => {
+        if (!firebaseUser) return;
+        await updateUserStats(firebaseUser.uid, score, game);
+        // Refresh local user data
+        const refreshed = await getUserData(firebaseUser.uid);
+        setUser(refreshed);
     };
 
     return (
-        <AuthContext.Provider value={{ user, isLoggedIn, login, logout, updateStats }}>
+        <AuthContext.Provider value={{ user, firebaseUser, isLoggedIn, isLoading, login, register, logout, updateStats }}>
             {children}
         </AuthContext.Provider>
     );

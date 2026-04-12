@@ -48,10 +48,11 @@ export default function PlayPage() {
     }, []);
 
     useEffect(() => {
-        // High score is stored in localStorage for all users 
-        const savedHighScore = localStorage.getItem('bananaCrush_highScore');
-        if (savedHighScore) setHighScore(parseInt(savedHighScore));
-    }, []);
+        // Load high score from user's Firestore data if logged in
+        if (isLoggedIn && user) {
+            setHighScore(user.bananaHighScore ?? 0);
+        }
+    }, [isLoggedIn, user]);
 
     const startGame = (level: Difficulty) => {
         setDifficulty(level);
@@ -70,35 +71,18 @@ export default function PlayPage() {
         updateIntensity(newScore);
         if (newScore > highScore) {
             setHighScore(newScore);
-            if (isLoggedIn) {
-                localStorage.setItem('bananaCrush_highScore', newScore.toString());
-            }
         }
         loadNewPuzzle();
     };
 
+
     const onGameOver = useCallback((finalScore: number) => {
         playSound('gameover');
-        // Update user stats if logged in
+        // Update user stats in Firestore if logged in
         if (isLoggedIn) {
-            updateStats(finalScore);
+            updateStats(finalScore, "banana");
         }
-
-        // Save to leaderboard for registered users
-        if (!isLoggedIn || !user) return;
-
-        const leaderboard = JSON.parse(localStorage.getItem('bananaCrush_leaderboard') || '[]');
-        const newEntry = {
-            name: user.username,
-            score: finalScore,
-            avatar: "🍌",
-            rank: 0
-        };
-
-        leaderboard.push(newEntry);
-        leaderboard.sort((a: any, b: any) => b.score - a.score);
-        localStorage.setItem('bananaCrush_leaderboard', JSON.stringify(leaderboard.slice(0, 10)));
-    }, [isLoggedIn, user, updateStats]);
+    }, [isLoggedIn, updateStats, playSound]);
 
     const handleIncorrect = () => {
         playSound('incorrect');

@@ -5,17 +5,10 @@ import { motion } from "framer-motion";
 import { Star, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { getTopPlayers, UserData } from "@/services/userService";
 import AuthCard from "./AuthCard";
 
-//Code improved using ChatGPT
-
-const DEFAULT_LEADERBOARD = [
-    { rank: 1, name: "BananaKing", score: 15400, avatar: "🏆" },
-    { rank: 2, name: "MonkeyD", score: 12200, avatar: "🥈" },
-    { rank: 3, name: "SplitMaster", score: 9800, avatar: "🥉" },
-    { rank: 4, name: "YellowPulse", score: 8500, avatar: "🍌" },
-    { rank: 5, name: "FruitCrush", score: 7200, avatar: "⭐" },
-];
+const RANK_AVATARS = ["🏆", "🥈", "🥉", "🍌", "⭐"];
 
 interface LeaderboardCardProps {
     isModal?: boolean;
@@ -29,36 +22,25 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
     const [leaderboard, setLeaderboard] = useState<any[]>([]);
 
     useEffect(() => {
-        if (isOpen) {
-            const savedLeaderboard = JSON.parse(localStorage.getItem('bananaCrush_leaderboard') || '[]');
-
-            // Combine default data with saved data
-            const combined = [...savedLeaderboard, ...DEFAULT_LEADERBOARD];
-
-            // Sort by score and take unique names 
-            const uniquePlayers = combined.reduce((acc: any[], current) => {
-                const x = acc.find(item => item.name === current.name);
-                if (!x) {
-                    return acc.concat([current]);
-                } else {
-                    if (current.score > x.score) {
-                        return acc.map(item => item.name === current.name ? current : item);
-                    }
-                    return acc;
+        if (isOpen && isLoggedIn) {
+            const fetchLeaderboard = async () => {
+                try {
+                    const topPlayers = await getTopPlayers("banana", 5);
+                    const ranked = topPlayers.map((player, index) => ({
+                        rank: index + 1,
+                        name: player.username,
+                        score: player.bananaHighScore ?? 0,
+                        avatar: RANK_AVATARS[index] || "🍌",
+                    }));
+                    setLeaderboard(ranked);
+                } catch (err) {
+                    console.error("Failed to load leaderboard:", err);
                 }
-            }, []);
-
-            uniquePlayers.sort((a: any, b: any) => b.score - a.score);
-
-            // top 5 ranks
-            const ranked = uniquePlayers.slice(0, 5).map((player, index) => ({
-                ...player,
-                rank: index + 1
-            }));
-
-            setLeaderboard(ranked);
+            };
+            fetchLeaderboard();
         }
-    }, [isOpen]);
+    }, [isOpen, isLoggedIn]);
+
 
     return (
         <AuthCard
@@ -105,8 +87,9 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
                                     </p>
                                     <div className="flex items-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                                         <Star size={10} className="mr-1 fill-candy-yellow text-candy-yellow" />
-                                        {DEFAULT_LEADERBOARD.some(p => p.name === player.name) ? "Legendary Player" : "Active Player"}
+                                        {player.rank <= 3 ? "Top Player" : "Active Player"}
                                     </div>
+
                                 </div>
                             </div>
                             <div className="text-right">

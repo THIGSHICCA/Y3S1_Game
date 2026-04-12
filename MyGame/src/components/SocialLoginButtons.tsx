@@ -2,30 +2,17 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter, useSearchParams } from "next/navigation";
+
 
 interface SocialLoginButtonsProps {
     onSuccess?: () => void;
 }
 
 const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({ onSuccess }) => {
-    const { login } = useAuth();
-    const router = useRouter();
-    const searchParams = useSearchParams();
-
     const handleSocialLogin = (provider: string) => {
-        // Mocking social login flow
-        const mockEmail = `${provider.toLowerCase()}@banana.com`;
-        login(mockEmail);
-
-        const returnUrl = searchParams.get("returnUrl") || "/";
-        if (onSuccess) {
-            onSuccess();
-        } else {
-            router.push(returnUrl);
-        }
+        alert(`${provider} login coming soon!`);
     };
+
 
     return (
         <div className="space-y-4">

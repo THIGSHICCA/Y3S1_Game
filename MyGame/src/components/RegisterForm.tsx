@@ -17,22 +17,41 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { login } = useAuth();
+    const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { register } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        login(email);
-
-        const returnUrl = searchParams.get("returnUrl") || "/";
-
-        if (onSuccess) {
-            onSuccess();
-        } else {
-            router.push(returnUrl);
+        setError("");
+        setIsSubmitting(true);
+        try {
+            await register(email, password, username);
+            const returnUrl = searchParams.get("returnUrl") || "/";
+            if (onSuccess) {
+                onSuccess();
+            } else {
+                router.push(returnUrl);
+            }
+        } catch (err: unknown) {
+            console.error("Registration error:", err);
+            const firebaseErr = err as { code?: string; message?: string };
+            const code = firebaseErr?.code;
+            if (code === "auth/email-already-in-use") {
+                setError("This email is already registered. Try logging in.");
+            } else if (code === "auth/weak-password") {
+                setError("Password must be at least 6 characters.");
+            } else if (code === "auth/invalid-email") {
+                setError("Please enter a valid email address.");
+            } else {
+                setError(firebaseErr?.message || "Something went wrong. Please try again.");
+            }
+        } finally {
+            setIsSubmitting(false);
         }
+
     };
 
     return (
@@ -111,13 +130,20 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin 
                 </motion.div>
             </div>
 
+            {error && (
+                <p className="text-red-500 font-bold text-sm text-center bg-red-50 rounded-xl px-4 py-2 border border-red-200">
+                    {error}
+                </p>
+            )}
+
             <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="candy-button w-full bg-candy-pink text-white py-5 rounded-2xl text-xl font-black shadow-[0_8px_0_0_#ad1457] active:shadow-none transition-all flex items-center justify-center space-x-3 border-4 border-white"
+                disabled={isSubmitting}
+                className="candy-button w-full bg-candy-pink text-white py-5 rounded-2xl text-xl font-black shadow-[0_8px_0_0_#ad1457] active:shadow-none transition-all flex items-center justify-center space-x-3 border-4 border-white disabled:opacity-70 disabled:cursor-not-allowed"
             >
-                <span>JOIN THE PARTY</span>
+                <span>{isSubmitting ? "JOINING..." : "JOIN THE PARTY"}</span>
                 <ArrowRight size={24} />
             </motion.button>
 

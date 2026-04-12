@@ -25,7 +25,8 @@ const DIFFICULTY_SETTINGS = {
 };
 
 const MathGameModal: React.FC<MathGameModalProps> = ({ isOpen, onClose }) => {
-    const { isLoggedIn, updateStats } = useAuth();
+    const { isLoggedIn, user, updateStats } = useAuth();
+
     const { playSound, updateIntensity } = useSound();
 
     const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
@@ -51,9 +52,11 @@ const MathGameModal: React.FC<MathGameModalProps> = ({ isOpen, onClose }) => {
 
     useEffect(() => {
         if (!isOpen) return;
-        const savedHighScore = localStorage.getItem('mathMaster_highScore');
-        if (savedHighScore) setHighScore(parseInt(savedHighScore));
-    }, [isOpen]);
+        // Load math high score from Firestore user data
+        if (isLoggedIn && user) {
+            setHighScore(user.mathHighScore ?? 0);
+        }
+    }, [isOpen, isLoggedIn, user]);
 
     const startGame = (level: Difficulty) => {
         setDifficulty(level);
@@ -72,17 +75,15 @@ const MathGameModal: React.FC<MathGameModalProps> = ({ isOpen, onClose }) => {
         updateIntensity(newScore);
         if (newScore > highScore) {
             setHighScore(newScore);
-            if (isLoggedIn) {
-                localStorage.setItem('mathMaster_highScore', newScore.toString());
-            }
         }
         loadNewPuzzle(difficulty!);
     };
 
+
     const onGameOver = useCallback((finalScore: number) => {
         playSound('gameover');
         if (isLoggedIn) {
-            updateStats(finalScore);
+            updateStats(finalScore, "math");
         }
     }, [isLoggedIn, updateStats, playSound]);
 
