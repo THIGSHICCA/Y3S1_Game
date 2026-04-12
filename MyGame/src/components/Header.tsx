@@ -33,31 +33,31 @@ const Header = () => {
     if (pathname === "/") return null;
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 w-full px-6 md:px-10 py-8 pointer-events-none">
-            <div className="flex justify-between items-start max-w-[1600px] mx-auto">
+        <header className="fixed top-0 left-0 right-0 z-50 w-full px-2 sm:px-4 md:px-6 py-2 sm:py-4 md:py-6 pointer-events-none">
+            <div className="flex justify-between items-center sm:items-start w-full gap-2">
                 <div className="flex items-start">
                     <motion.div
                         initial={{ y: -50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        className="pointer-events-auto bg-white/10 backdrop-blur-2xl border-4 border-white/30 rounded-[2.5rem] p-3 shadow-2xl"
+                        className="pointer-events-auto bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-3"
                     >
-                        <Link href="/" className="flex items-center space-x-3 group px-4">
+                        <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group px-2 sm:px-4">
                             <motion.div
                                 whileHover={{ scale: 1.1, rotate: 10 }}
-                                className="w-14 h-14 bg-candy-yellow rounded-2xl flex items-center justify-center shadow-[0_6px_0_0_#f57f17] border-2 border-white"
+                                className="w-10 h-10 sm:w-14 sm:h-14 bg-candy-yellow rounded-xl sm:rounded-2xl flex items-center justify-center shadow-[0_4px_0_0_#f57f17] sm:shadow-[0_6px_0_0_#f57f17] border-none"
                             >
-                                <span className="text-3xl">🍌</span>
+                                <span className="text-xl sm:text-3xl">🍌</span>
                             </motion.div>
-                            <div>
-                                <h1 className="font-black text-2xl text-white text-shadow-bubbly leading-none">
+                            <div className="hidden sm:block">
+                                <h1 className="font-black text-xl md:text-2xl text-white text-shadow-bubbly leading-none">
                                     BANANA <br />
-                                    <span className="text-candy-yellow text-xl">CRUSH</span>
+                                    <span className="text-candy-yellow text-lg">CRUSH</span>
                                 </h1>
                             </div>
                         </Link>
                     </motion.div>
 
-                    <div className="flex items-center space-x-4 ml-6">
+                    <div className="flex items-center space-x-2 sm:space-x-4 ml-2 sm:ml-6">
                         {navLinks.map((link) => (
                             <motion.div
                                 key={link.name}
@@ -68,21 +68,21 @@ const Header = () => {
                                 {link.type === "button" ? (
                                     <button
                                         onClick={link.onClick}
-                                        className={`pointer-events-auto flex items-center space-x-2 px-6 py-4 rounded-[2rem] border-4 transition-all font-black uppercase tracking-widest text-sm shadow-xl bg-white/10 backdrop-blur-xl border-white/30 text-white hover:bg-white/20 cursor-pointer`}
+                                        className={`pointer-events-auto flex items-center space-x-2 px-3 sm:px-6 py-3 sm:py-4 rounded-[1.5rem] sm:rounded-[2rem] border-2 sm:border-4 transition-all font-black uppercase tracking-widest text-[10px] sm:text-sm shadow-xl bg-white/10 backdrop-blur-xl border-white/30 text-white hover:bg-white/20 cursor-pointer`}
                                     >
                                         {link.icon}
-                                        <span>{link.name}</span>
+                                        <span className="hidden sm:inline">{link.name}</span>
                                     </button>
                                 ) : (
                                     <Link
                                         href={link.href!}
-                                        className={`pointer-events-auto flex items-center space-x-2 px-6 py-4 rounded-[2rem] border-4 transition-all font-black uppercase tracking-widest text-sm shadow-xl ${pathname === link.href
+                                        className={`pointer-events-auto flex items-center space-x-2 px-3 sm:px-6 py-3 sm:py-4 rounded-[1.5rem] sm:rounded-[2rem] border-2 sm:border-4 transition-all font-black uppercase tracking-widest text-[10px] sm:text-sm shadow-xl ${pathname === link.href
                                             ? 'bg-candy-yellow border-white text-white scale-105'
                                             : 'bg-white/10 backdrop-blur-xl border-white/30 text-white hover:bg-white/20'
                                             }`}
                                     >
                                         {link.icon}
-                                        <span>{link.name}</span>
+                                        <span className="hidden sm:inline">{link.name}</span>
                                     </Link>
                                 )}
                             </motion.div>
@@ -97,18 +97,18 @@ const Header = () => {
                 >
                     <button
                         onClick={() => setShowProfile(true)}
-                        className="pointer-events-auto flex items-center space-x-3 p-1 pr-6 bg-white/10 backdrop-blur-2xl border-4 border-white/30 rounded-full shadow-2xl hover:bg-white/20 transition-all group"
+                        className="pointer-events-auto flex items-center space-x-2 sm:space-x-3 p-1 pr-1 sm:pr-6 bg-white/10 backdrop-blur-2xl border-2 sm:border-4 border-white/30 rounded-full shadow-2xl hover:bg-white/20 transition-all group"
                     >
-                        <div className="w-12 h-12 bg-candy-purple rounded-full flex items-center justify-center border-2 border-white shadow-lg overflow-hidden">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-candy-purple rounded-full flex items-center justify-center border-2 border-white shadow-lg overflow-hidden">
                             {isLoggedIn && user ? (
-                                <span className="font-black text-white text-sm">
+                                <span className="font-black text-white text-[10px] sm:text-sm">
                                     {getInitials(user.username)}
                                 </span>
                             ) : (
-                                <User className="text-white" size={20} />
+                                <User className="text-white size-4 sm:size-5" />
                             )}
                         </div>
-                        <div className="text-left">
+                        <div className="text-left hidden sm:block">
                             <p className="text-[10px] font-black text-candy-yellow uppercase tracking-widest leading-none">
                                 {isLoggedIn ? 'Player' : 'Guest'}
                             </p>

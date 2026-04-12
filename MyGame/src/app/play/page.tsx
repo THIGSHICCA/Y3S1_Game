@@ -124,7 +124,7 @@ export default function PlayPage() {
 
 
     return (
-        <main className="min-h-screen p-6 pt-24 relative overflow-hidden">
+        <main className="h-screen p-2 sm:p-4 pt-20 sm:pt-18 md:pt-16 relative overflow-hidden">
 
             <div className="absolute inset-0 z-0">
                 <div

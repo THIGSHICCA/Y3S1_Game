@@ -21,6 +21,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
     const [feedback, setFeedback] = useState<'correct' | 'incorrect' | 'timeup' | null>(null);
     const [timeLeft, setTimeLeft] = useState(timeLimit);
 
+    //Code improved using ChatGPT
+
     useEffect(() => {
         if (isLoading || isChecking || feedback) return;
 
@@ -81,7 +83,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
     const timerProgress = (timeLeft / timeLimit) * 100;
 
     return (
-        <div className={`w-full max-w-4xl bg-white/90 backdrop-blur-xl rounded-[3rem] border-8 border-candy-yellow shadow-[0_20px_0_0_#f57f17] ${isMath ? 'p-6 md:p-8' : 'p-8 md:p-12'} relative overflow-hidden`}>
+        <div className={`w-full max-w-4xl bg-white/90 backdrop-blur-xl rounded-[2.5rem] sm:rounded-[3rem] border-4 sm:border-6 border-candy-yellow shadow-[0_10px_0_0_#f57f17] sm:shadow-[0_15px_0_0_#f57f17] ${isMath ? 'p-4 sm:p-6 md:p-8' : 'p-4 sm:p-8 md:p-10'} relative overflow-hidden`}>
 
             <div className="absolute top-0 left-0 right-0 h-3 bg-gray-100 overflow-hidden">
                 <motion.div
@@ -114,12 +116,12 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                 )}
             </AnimatePresence>
 
-            <div className={`grid grid-cols-1 lg:grid-cols-2 ${isMath ? 'gap-6' : 'gap-12'} items-center`}>
+            <div className={`grid grid-cols-1 lg:grid-cols-2 ${isMath ? 'gap-4' : 'gap-8'} items-center`}>
 
                 <div className="relative">
                     <motion.div
                         layout
-                        className="relative aspect-video rounded-3xl overflow-hidden border-4 border-candy-yellow/20 bg-gray-50 flex items-center justify-center p-4 shadow-inner"
+                        className="relative aspect-video max-h-[25vh] lg:max-h-[42vh] rounded-3xl overflow-hidden border-4 border-candy-yellow/20 bg-gray-50 flex items-center justify-center p-4 shadow-inner"
                     >
                         <AnimatePresence mode="wait">
                             {puzzle.question.startsWith('http') || puzzle.question.startsWith('/') ? (
@@ -143,7 +145,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                                     <div className="bg-white rounded-full p-4 mb-4 inline-block shadow-sm">
                                         <span className="text-4xl">🧠</span>
                                     </div>
-                                    <h3 className="text-5xl md:text-7xl font-black text-candy-purple text-shadow-bubbly">
+                                    <h3 className="text-5xl sm:text-6xl md:text-8xl font-black text-candy-purple text-shadow-bubbly">
                                         {puzzle.question}
                                     </h3>
                                 </motion.div>
@@ -162,7 +164,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                                 >
                                     <motion.div
                                         animate={feedback === 'incorrect' || feedback === 'timeup' ? { x: [-10, 10, -10, 10, 0] } : { y: [-20, 0] }}
-                                        className={`text-5xl md:text-7xl font-black ${feedback === 'correct' ? 'text-green-500' : 'text-red-500'
+                                        className={`text-4xl sm:text-5xl md:text-7xl font-black ${feedback === 'correct' ? 'text-green-500' : 'text-red-500'
                                             } drop-shadow-[0_4px_0_rgba(0,0,0,0.2)] text-center`}
                                     >
                                         {feedback === 'correct' ? 'CORRECT!' : feedback === 'timeup' ? 'TIME UP!' : 'WRONG!'}
@@ -173,10 +175,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                     </motion.div>
 
 
-                    <div className="absolute -top-6 -right-6 flex items-center justify-center">
-                        <div className="relative w-20 h-20 bg-white rounded-full border-4 border-candy-yellow shadow-xl flex items-center justify-center">
-                            <Timer size={24} className={`absolute top-2 ${timerColor}`} />
-                            <span className={`text-2xl font-black mt-4 ${timerColor}`}>
+                    <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 flex items-center justify-center">
+                        <div className="relative w-14 h-14 sm:w-20 sm:h-20 bg-white rounded-full border-4 border-candy-yellow shadow-xl flex items-center justify-center">
+                            <Timer size={18} className={`absolute top-1 sm:top-2 sm:size-6 ${timerColor}`} />
+                            <span className={`text-xl sm:text-2xl font-black mt-3 sm:mt-4 ${timerColor}`}>
                                 {timeLeft}
                             </span>
                         </div>
@@ -184,13 +186,13 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                 </div>
 
 
-                <div className="flex flex-col space-y-8">
+                <div className="flex flex-col space-y-4">
                     <div className="text-center lg:text-left">
                         <h2 className={`${isMath ? 'text-2xl md:text-3xl' : 'text-3xl md:text-4xl'} font-black text-candy-purple ${isMath ? 'mb-1' : 'mb-2'} uppercase`}>What's the answer?</h2>
                         <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Be quick! The clock is ticking!</p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-8">
+                    <form onSubmit={handleSubmit} className="space-y-4">
                         {isMath ? (
                             <div className="relative group">
                                 <input
@@ -199,7 +201,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                                     value={answer}
                                     onChange={(e) => setAnswer(e.target.value)}
                                     placeholder="?"
-                                    className="w-full bg-gray-100 rounded-3xl p-6 md:p-8 border-4 border-gray-200 shadow-inner text-center text-5xl md:text-6xl font-black text-candy-pink focus:border-candy-purple focus:ring-4 focus:ring-candy-purple/10 outline-none transition-all placeholder:text-gray-300"
+                                    className="w-full bg-gray-100 rounded-3xl p-3 sm:p-4 md:p-6 border-4 border-gray-200 shadow-inner text-center text-4xl sm:text-5xl md:text-6xl font-black text-candy-pink focus:border-candy-purple focus:ring-4 focus:ring-candy-purple/10 outline-none transition-all placeholder:text-gray-300"
                                     disabled={timeLeft === 0 || isChecking}
                                 />
                                 <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-20 group-focus-within:opacity-100 transition-opacity">
@@ -210,7 +212,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                             <>
 
                                 <div className="bg-gray-100 rounded-3xl p-6 border-4 border-gray-200 shadow-inner text-center relative overflow-hidden">
-                                    <span className="text-6xl font-black text-candy-pink drop-shadow-sm min-h-[1.2em] block relative z-10">
+                                    <span className="text-4xl sm:text-5xl font-black text-candy-pink drop-shadow-sm min-h-[1.2em] block relative z-10">
                                         {answer || "?"}
                                     </span>
                                 </div>
@@ -225,7 +227,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                                             whileTap={{ scale: 0.9 }}
                                             disabled={timeLeft === 0}
                                             onClick={() => handleNumberClick(num)}
-                                            className={`aspect-square rounded-2xl flex items-center justify-center text-2xl font-black transition-all border-4 ${parseInt(answer) === num
+                                            className={`aspect-square rounded-xl sm:rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black transition-all border-2 sm:border-4 ${parseInt(answer) === num
                                                 ? 'bg-candy-yellow text-white border-white scale-110 shadow-lg'
                                                 : 'bg-white text-candy-purple border-candy-yellow/30 hover:border-candy-yellow'
                                                 } ${timeLeft === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -242,11 +244,11 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                             whileTap={{ scale: 0.95 }}
                             type="submit"
                             disabled={!answer || isChecking || timeLeft === 0}
-                            className={`candy-button w-full py-6 rounded-[2rem] text-2xl font-black shadow-[0_10px_0_0_#ad1457] active:shadow-none transition-all flex items-center justify-center space-x-3 border-4 border-white ${!answer || isChecking || timeLeft === 0 ? 'bg-gray-300 shadow-none grayscale cursor-not-allowed' : 'bg-candy-pink text-white'
+                            className={`candy-button w-full py-4 sm:py-6 rounded-[2rem] sm:rounded-[2.5rem] text-xl sm:text-2xl font-black shadow-[0_8px_0_0_#ad1457] active:shadow-none transition-all flex items-center justify-center space-x-3 border-4 border-white ${!answer || isChecking || timeLeft === 0 ? 'bg-gray-300 shadow-none grayscale cursor-not-allowed' : 'bg-candy-pink text-white'
                                 }`}
                         >
                             <span>SUBMIT ANSWER</span>
-                            <Send size={28} />
+                            <Send size={32} />
                         </motion.button>
                     </form>
                 </div>

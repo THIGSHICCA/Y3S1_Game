@@ -18,7 +18,7 @@ const AuthCard: React.FC<AuthCardProps> = ({ title, subtitle, children, onClose,
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 40 }}
             transition={{ type: "spring", damping: 15 }}
-            className="relative w-full max-w-md bg-white rounded-[3rem] border-8 border-candy-yellow shadow-[0_20px_0_0_#f57f17] flex flex-col max-h-[90vh]"
+            className="relative w-full max-w-md bg-white rounded-[2rem] sm:rounded-[3rem] border-4 sm:border-8 border-candy-yellow shadow-[0_10px_0_0_#f57f17] sm:shadow-[0_20px_0_0_#f57f17] flex flex-col max-h-[90vh]"
         >
 
             {onClose && (
@@ -31,16 +31,15 @@ const AuthCard: React.FC<AuthCardProps> = ({ title, subtitle, children, onClose,
             )}
 
             <div className="rounded-[2.5rem] flex flex-col h-full overflow-hidden">
-                {/* Header */}
-                <div className="bg-candy-pink p-8 text-center text-white relative">
-                    <h2 className="text-4xl font-black drop-shadow-[0_4px_0_#ad1457] text-shadow-bubbly uppercase tracking-wider">
+
+                <div className="bg-candy-pink p-6 sm:p-8 text-center text-white relative">
+                    <h2 className="text-2xl sm:text-4xl font-black drop-shadow-[0_4px_0_#ad1457] text-shadow-bubbly uppercase tracking-wider">
                         {title}
                     </h2>
-                    <p className="font-bold text-white/90 mt-2 uppercase text-sm tracking-widest">{subtitle}</p>
+                    <p className="font-bold text-white/90 mt-2 uppercase text-[10px] sm:text-sm tracking-widest">{subtitle}</p>
                 </div>
 
-                {/* Content (Form and Actions) */}
-                <div className="p-8 space-y-6 flex-1 overflow-y-auto min-h-0">
+                <div className="p-6 sm:p-8 space-y-4 sm:space-y-6 flex-1 overflow-y-auto min-h-0">
                     {children}
                 </div>
             </div>

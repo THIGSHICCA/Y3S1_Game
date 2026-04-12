@@ -9,7 +9,7 @@ export default function SignInPage() {
     return (
         <main className="min-h-screen flex items-center justify-center bg-[radial-gradient(circle_at_50%_50%,#ff80ab_0%,#7c4dff_100%)] p-6 overflow-hidden relative">
 
-            {/* Animated Background */}
+
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {[...Array(6)].map((_, i) => (
                     <motion.div

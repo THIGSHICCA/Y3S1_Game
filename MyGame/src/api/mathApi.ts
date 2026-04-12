@@ -27,7 +27,7 @@ export const fetchMathPuzzle = async (difficulty: MathDifficulty): Promise<MathP
     let question = `${a} ${operator} ${b}`;
     let solution = eval(question);
 
-    // If solution is negative (for subtractions), flip them
+    // If solution is negative (for subtractions)
     if (solution < 0) {
         question = `${b} ${operator} ${a}`;
         solution = eval(question);
@@ -39,6 +39,6 @@ export const fetchMathPuzzle = async (difficulty: MathDifficulty): Promise<MathP
                 question: `${question} = ?`,
                 solution: solution
             });
-        }, 500); // Simulate network delay
+        }, 500);
     });
 };

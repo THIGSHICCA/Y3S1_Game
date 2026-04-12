@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import AuthCard from "./AuthCard";
 
+//Code improved using ChatGPT
+
 const DEFAULT_LEADERBOARD = [
     { rank: 1, name: "BananaKing", score: 15400, avatar: "🏆" },
     { rank: 2, name: "MonkeyD", score: 12200, avatar: "🥈" },
