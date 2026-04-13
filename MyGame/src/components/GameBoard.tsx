@@ -171,6 +171,11 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
                                         className={`text-5xl sm:text-7xl md:text-8xl font-black ${feedback === 'correct' ? 'text-green-500' : 'text-red-500'} drop-shadow-md text-center`}
                                     >
                                         {feedback === 'correct' ? 'YES!' : feedback === 'timeup' ? 'TIME UP!' : 'NO!'}
+                                        {(isMath && (feedback === 'incorrect' || feedback === 'timeup')) && (
+                                            <div className="text-2xl sm:text-4xl mt-2 sm:mt-4 opacity-80">
+                                                IT WAS {puzzle.solution}
+                                            </div>
+                                        )}
                                     </motion.div>
                                 </motion.div>
                             )}

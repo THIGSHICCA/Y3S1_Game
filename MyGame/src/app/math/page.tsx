@@ -4,17 +4,15 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameLogic } from "@/hooks/useGameLogic";
-import { fetchPuzzle, BananaPuzzle } from "@/api/bananaApi";
+import { fetchMathPuzzle, MathPuzzle } from "@/api/mathApi";
 import GameBoard from "@/components/GameBoard";
 import GameHUD from "@/components/GameHUD";
 import DifficultySelection from "@/components/DifficultySelection";
 import GameOverScreen from "@/components/GameOverScreen";
-import LeaderboardCard from "@/components/LeaderboardCard";
-import { GAME_MODES, DIFFICULTY_SETTINGS } from "@/lib/constants";
+import { GAME_MODES } from "@/lib/constants";
 
-export default function PlayPage() {
+export default function MathPage() {
     const router = useRouter();
-    const [showLeaderboard, setShowLeaderboard] = React.useState(false);
 
     const {
         difficulty,
@@ -31,9 +29,9 @@ export default function PlayPage() {
         handleTimeUp,
         restartGame,
         isLoggedIn
-    } = useGameLogic<BananaPuzzle>({
-        gameMode: GAME_MODES.BANANA,
-        fetchPuzzle: fetchPuzzle
+    } = useGameLogic<MathPuzzle>({
+        gameMode: GAME_MODES.MATH,
+        fetchPuzzle: fetchMathPuzzle
     });
 
     return (
@@ -43,7 +41,7 @@ export default function PlayPage() {
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                     style={{ backgroundImage: 'url("/BackgroundImage/PlayBackground.jpeg")' }}
                 />
-                <div className="absolute inset-0  backdrop-blur-[1px]" />
+                <div className="absolute inset-0 backdrop-blur-[2px] bg-candy-purple/10" />
             </div>
 
             <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-5">
@@ -54,7 +52,7 @@ export default function PlayPage() {
                 />
             </div>
 
-            <div className="max-w-6xl mx-auto relative z-10 h-full flex flex-col">
+            <div className="max-w-6xl mx-auto relative z-10 w-full h-full flex flex-col">
                 <GameHUD
                     score={score}
                     lives={lives}
@@ -62,10 +60,11 @@ export default function PlayPage() {
                     gameStarted={gameStarted}
                     gameOver={gameOver}
                     onQuit={() => router.push('/')}
+                    gameMode="math"
                     difficulty={difficulty}
                 />
 
-                <div className="flex-1 flex items-center justify-center">
+                <div className="flex-1 flex items-center justify-center mt-4 md:mt-2">
                     <AnimatePresence mode="wait">
                         {!gameStarted && !gameOver ? (
                             <DifficultySelection onSelect={startGame} />
@@ -75,8 +74,7 @@ export default function PlayPage() {
                                 difficulty={difficulty}
                                 isLoggedIn={isLoggedIn}
                                 onRestart={restartGame}
-                                onLeaderboard={() => setShowLeaderboard(true)}
-                                gameMode="banana"
+                                gameMode="math"
                             />
                         ) : (
                             <motion.div
@@ -92,8 +90,8 @@ export default function PlayPage() {
                                         onIncorrect={handleIncorrect}
                                         onTimeUp={handleTimeUp}
                                         isLoading={isLoading}
-                                        timeLimit={DIFFICULTY_SETTINGS[difficulty].time}
-                                        gameMode="banana"
+                                        timeLimit={difficulty === 'easy' ? 30 : difficulty === 'medium' ? 15 : 10}
+                                        gameMode="math"
                                     />
                                 )}
                             </motion.div>
@@ -101,12 +99,6 @@ export default function PlayPage() {
                     </AnimatePresence>
                 </div>
             </div>
-
-            <LeaderboardCard
-                isModal
-                isOpen={showLeaderboard}
-                onClose={() => setShowLeaderboard(false)}
-            />
         </main>
     );
 }

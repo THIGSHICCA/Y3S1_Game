@@ -5,10 +5,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Play, Trophy, Home, Info, Volume2, VolumeX, Brain } from "lucide-react";
-import TalkingBanana from "./Banana Character";
+import TalkingBanana from "./BananaCharacter";
 import LeaderboardCard from "./LeaderboardCard";
 import UserProfileModal from "./UserProfileModal";
-import MathGameModal from "./MathGameModal";
 import { useSound } from "@/context/SoundContext";
 import { useAuth } from "@/context/AuthContext";
 import { User } from "lucide-react";
@@ -26,7 +25,6 @@ const Hero = () => {
     const router = useRouter();
     const [showLeaderboard, setShowLeaderboard] = React.useState(false);
     const [showProfile, setShowProfile] = React.useState(false);
-    const [showMathGame, setShowMathGame] = React.useState(false);
     const { isMuted, toggleMute } = useSound();
     const { user, isLoggedIn } = useAuth();
 
@@ -118,7 +116,7 @@ const Hero = () => {
                 {/* Improve Math Shortcut */}
                 <motion.div
                     whileHover={{ scale: 1.1, x: -10 }}
-                    onClick={() => setShowMathGame(true)}
+                    onClick={() => router.push('/math')}
                     className="bg-white/20 backdrop-blur-xl p-4 rounded-2xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-purple hover:border-white transition-all"
                 >
                     <div className="flex items-center space-x-4">
@@ -197,10 +195,6 @@ const Hero = () => {
 
                 </motion.div>
             </div>
-            <MathGameModal
-                isOpen={showMathGame}
-                onClose={() => setShowMathGame(false)}
-            />
         </section>
     );
 };

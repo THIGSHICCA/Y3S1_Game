@@ -58,7 +58,7 @@ const GameOverScreen: React.FC<GameOverScreenProps> = ({
                 >
                     PLAY AGAIN
                 </button>
-                {onLeaderboard && (
+                {!isMath && onLeaderboard && (
                     <button
                         onClick={onLeaderboard}
                         className="bg-white text-candy-purple border-2 sm:border-4 border-candy-purple w-full py-4 sm:py-5 rounded-2xl sm:rounded-3xl text-lg sm:text-xl font-black hover:bg-gray-50 transition-all font-outfit flex items-center justify-center space-x-2"

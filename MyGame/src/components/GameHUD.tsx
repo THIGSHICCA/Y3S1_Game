@@ -13,6 +13,8 @@ interface GameHUDProps {
     gameStarted: boolean;
     gameOver: boolean;
     onQuit: () => void;
+    gameMode?: 'banana' | 'math';
+    difficulty?: string | null;
 }
 
 const GameHUD: React.FC<GameHUDProps> = ({
@@ -21,8 +23,11 @@ const GameHUD: React.FC<GameHUDProps> = ({
     highScore,
     gameStarted,
     gameOver,
-    onQuit
+    onQuit,
+    gameMode = 'banana',
+    difficulty
 }) => {
+    const isMath = gameMode === 'math';
     return (
         <div className="flex flex-row md:grid md:grid-cols-3 items-center justify-between mb-2 sm:mb-4 gap-2 sm:gap-4 w-full px-2 sm:px-4">
             {/* Left: Quit and Lives */}
@@ -71,35 +76,51 @@ const GameHUD: React.FC<GameHUDProps> = ({
                         <motion.div
                             initial={{ y: -20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            className="bg-white/90 backdrop-blur-md rounded-[1.5rem] sm:rounded-[2.5rem] px-3 sm:px-6 py-1 sm:py-2 border-2 sm:border-4 border-candy-yellow shadow-md sm:shadow-xl flex items-center space-x-2 sm:space-x-4"
+                            className="flex flex-col items-center"
                         >
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-candy-yellow rounded-lg sm:rounded-xl flex items-center justify-center text-white shadow-inner">
-                                <Trophy size={14} className="sm:size-5" />
+                            <div className="bg-white/90 backdrop-blur-md rounded-[1.5rem] sm:rounded-[2.5rem] px-3 sm:px-6 py-1 sm:py-2 border-2 sm:border-4 border-candy-yellow shadow-md sm:shadow-xl flex items-center space-x-2 sm:space-x-4">
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-candy-yellow rounded-lg sm:rounded-xl flex items-center justify-center text-white shadow-inner">
+                                    <Trophy size={14} className="sm:size-5" />
+                                </div>
+                                <div className="text-center">
+                                    <p className="text-[8px] sm:text-[10px] font-black text-candy-yellow/60 uppercase tracking-widest leading-none mb-0.5">Score</p>
+                                    <p className="text-xl sm:text-3xl font-black text-candy-purple leading-none">{score.toLocaleString()}</p>
+                                </div>
                             </div>
-                            <div className="text-center">
-                                <p className="text-[8px] sm:text-[10px] font-black text-candy-yellow/60 uppercase tracking-widest leading-none mb-0.5">Score</p>
-                                <p className="text-xl sm:text-3xl font-black text-candy-purple leading-none">{score.toLocaleString()}</p>
-                            </div>
+                            {difficulty && (
+                                <motion.div 
+                                    initial={{ opacity: 0, y: -10 }} 
+                                    animate={{ opacity: 1, y: 0 }} 
+                                    className="mt-2 bg-candy-purple/10 text-candy-purple px-3 py-0.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-widest"
+                                >
+                                    {difficulty} MODE
+                                </motion.div>
+                            )}
                         </motion.div>
                     )}
                 </AnimatePresence>
             </div>
 
-            {/* High Score */}
+            {/* High Score - Hidden for Math */}
             <div className="flex justify-end order-3 flex-1 md:flex-none">
-                <motion.div
-                    initial={{ x: 20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    className="bg-white/90 backdrop-blur-md rounded-2xl sm:rounded-3xl p-1 sm:p-2 md:p-3 border-2 sm:border-4 border-candy-pink shadow-md sm:shadow-lg flex items-center space-x-2 sm:space-x-4"
-                >
-                    <div className="w-8 h-8 md:w-10 md:h-10 bg-candy-pink rounded-lg sm:rounded-xl flex items-center justify-center text-white shadow-inner">
-                        <Sparkles size={14} className="sm:size-5" />
-                    </div>
-                    <div>
-                        <p className="text-[8px] sm:text-[10px] font-black text-candy-pink/60 uppercase tracking-widest leading-none mb-0.5">Best</p>
-                        <p className="text-sm sm:text-2xl font-black text-candy-purple leading-none">{highScore.toLocaleString()}</p>
-                    </div>
-                </motion.div>
+                <AnimatePresence>
+                    {!isMath && (
+                        <motion.div
+                            initial={{ x: 20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: 20, opacity: 0 }}
+                            className="bg-white/90 backdrop-blur-md rounded-2xl sm:rounded-3xl p-1 sm:p-2 md:p-3 border-2 sm:border-4 border-candy-pink shadow-md sm:shadow-lg flex items-center space-x-2 sm:space-x-4"
+                        >
+                            <div className="w-8 h-8 md:w-10 md:h-10 bg-candy-pink rounded-lg sm:rounded-xl flex items-center justify-center text-white shadow-inner">
+                                <Sparkles size={14} className="sm:size-5" />
+                            </div>
+                            <div>
+                                <p className="text-[8px] sm:text-[10px] font-black text-candy-pink/60 uppercase tracking-widest leading-none mb-0.5">Best</p>
+                                <p className="text-sm sm:text-2xl font-black text-candy-purple leading-none">{highScore.toLocaleString()}</p>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );

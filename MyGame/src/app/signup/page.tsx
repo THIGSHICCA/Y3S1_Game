@@ -41,7 +41,9 @@ export default function SignUpPage() {
                 className="w-full max-w-md relative z-10"
             >
                 <AuthCard title="JOIN US" subtitle="Start your sweet adventure!">
-                    <RegisterForm />
+                    <React.Suspense fallback={<div className="text-center p-4">Loading...</div>}>
+                        <RegisterForm />
+                    </React.Suspense>
                 </AuthCard>
 
                 <div className="mt-8 text-center">

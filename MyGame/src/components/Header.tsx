@@ -25,8 +25,8 @@ const Header = () => {
     const [showProfile, setShowProfile] = useState(false);
 
     const navLinks = [
-        { name: "Play", href: "/play", icon: <Gamepad2 size={20} /> },
-        { name: "Leaders", type: "button", onClick: () => setShowLeaderboard(true), icon: <Trophy size={20} /> },
+        ...(pathname === '/play' ? [] : [{ name: "Play", href: "/play", icon: <Gamepad2 size={20} /> }]),
+        ...(pathname === '/math' ? [] : [{ name: "Leaders", type: "button", onClick: () => setShowLeaderboard(true), icon: <Trophy size={20} /> }]),
     ];
 
     // Hide on the landing page

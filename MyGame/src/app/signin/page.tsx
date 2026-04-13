@@ -42,7 +42,9 @@ export default function SignInPage() {
                 className="w-full max-w-md relative z-10"
             >
                 <AuthCard title="SIGN IN" subtitle="Join the Banana Crush Party!">
-                    <LoginForm />
+                    <React.Suspense fallback={<div className="text-center p-4">Loading...</div>}>
+                        <LoginForm />
+                    </React.Suspense>
                 </AuthCard>
 
                 <div className="mt-8 text-center">
