@@ -32,10 +32,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
             if (fbUser) {
                 setFirebaseUser(fbUser);
+                
+                // Retrieve Firebase idToken and generate JWT via our backend
+                try {
+                    const idToken = await fbUser.getIdToken();
+                    await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ idToken })
+                    });
+                } catch (e) {
+                    console.error('Error generating backend session:', e);
+                }
+
                 const data = await getUserData(fbUser.uid);
                 setUser(data);
                 setIsLoggedIn(true);
             } else {
+                // Not logged in in Firebase, ensure backend session is cleared
+                await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
                 setFirebaseUser(null);
                 setUser(null);
                 setIsLoggedIn(false);
@@ -72,6 +87,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const logout = async () => {
         await signOut();
+        await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
         setUser(null);
         setFirebaseUser(null);
         setIsLoggedIn(false);
