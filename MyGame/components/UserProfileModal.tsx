@@ -25,6 +25,18 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
         onClose();
     };
 
+    const getBestScore = (game: 'banana' | 'math') => {
+        if (!user) return 0;
+        return Math.max(
+            (user as any)[`${game}HighScore_easy`] || 0,
+            (user as any)[`${game}HighScore_medium`] || 0,
+            (user as any)[`${game}HighScore_hard`] || 0
+        );
+    };
+
+    const bananaBest = getBestScore('banana');
+    const mathBest = getBestScore('math');
+
     return (
         <AuthCard
             title={isLoggedIn ? "MY PROFILE" : authMode === 'login' ? "WELCOME BACK" : "JOIN THE SQUAD"}
@@ -52,8 +64,8 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                     <div className="space-y-8">
 
                         <div className="flex items-center space-x-6 p-6 bg-gray-50 rounded-[2rem] border-4 border-candy-yellow/20">
-                            <div className="w-20 h-20 bg-candy-yellow rounded-[1.5rem] flex items-center justify-center text-4xl shadow-lg border-4 border-white">
-                                🍌
+                            <div className="w-20 h-20 bg-candy-yellow rounded-[1.5rem] flex items-center justify-center shadow-lg border-4 border-white">
+                                <UserCircle size={48} className="text-white" strokeWidth={2.5} />
                             </div>
                             <div className="flex-1 min-w-0">
                                 <h3 className="text-2xl font-black text-gray-800 uppercase tracking-tight truncate">
@@ -74,7 +86,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                                     <Trophy size={20} className="text-candy-yellow" />
                                 </div>
                                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Banana Best</p>
-                                <p className="text-xl font-black text-candy-yellow">{(user?.bananaHighScore ?? 0).toLocaleString()}</p>
+                                <p className="text-xl font-black text-candy-yellow">{bananaBest.toLocaleString()}</p>
                             </div>
 
                             <div className="bg-candy-pink/5 p-5 rounded-[2rem] border-4 border-candy-pink/10 text-center group hover:border-candy-pink/30 transition-all">
@@ -82,7 +94,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                                     <Trophy size={20} className="text-candy-pink" />
                                 </div>
                                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Math Best</p>
-                                <p className="text-xl font-black text-candy-pink">{(user?.mathHighScore ?? 0).toLocaleString()}</p>
+                                <p className="text-xl font-black text-candy-pink">{mathBest.toLocaleString()}</p>
                             </div>
 
                             <div className="bg-candy-purple/5 p-5 rounded-[2rem] border-4 border-candy-purple/10 text-center group hover:border-candy-purple/30 transition-all">

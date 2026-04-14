@@ -20,16 +20,16 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Invalid or expired idToken' }, { status: 401 });
         }
 
-        const userId = decodedToken.uid;
+        const uid = decodedToken.uid;
         const email = decodedToken.email;
 
         // Custom JWT is now safely generated for our own secure session
-        const token = signJWT({ userId, email });
+        const token = signJWT({ uid, email });
 
         const response = NextResponse.json({ 
             success: true, 
             message: 'Authenticated successfully',
-            user: { userId, email }
+            user: { uid, email }
         });
 
         // Set JWT as an HTTP-only cookie

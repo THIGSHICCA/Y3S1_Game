@@ -1,18 +1,31 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameLogic } from "@/hooks/useGameLogic";
-import { fetchMathPuzzle, MathPuzzle } from "@/api/mathApi";
 import GameBoard from "@/components/GameBoard";
 import GameHUD from "@/components/GameHUD";
 import DifficultySelection from "@/components/DifficultySelection";
 import GameOverScreen from "@/components/GameOverScreen";
-import { GAME_MODES, MATH_DIFFICULTY_SETTINGS } from "@/lib/constants";
+import LeaderboardCard from "@/components/LeaderboardCard";
+import { GAME_MODES, GAME_SETTINGS, GameMode } from "@/lib/constants";
 
-export default function MathPage() {
+interface GameClientProps {
+    gameMode: GameMode;
+    fetchPuzzle: (difficulty?: any) => Promise<any>;
+    backgroundImage: string;
+    overlayColor?: string;
+}
+
+export default function GameClient({ 
+    gameMode, 
+    fetchPuzzle, 
+    backgroundImage,
+    overlayColor = "bg-transparent"
+}: GameClientProps) {
     const router = useRouter();
+    const [showLeaderboard, setShowLeaderboard] = useState(false);
 
     const {
         difficulty,
@@ -29,21 +42,23 @@ export default function MathPage() {
         handleTimeUp,
         restartGame,
         isLoggedIn
-    } = useGameLogic<MathPuzzle>({
-        gameMode: GAME_MODES.MATH,
-        fetchPuzzle: fetchMathPuzzle
+    } = useGameLogic({
+        gameMode,
+        fetchPuzzle
     });
 
     return (
         <main className="h-screen p-2 sm:p-4 pt-20 sm:pt-18 md:pt-16 relative overflow-hidden">
+            {/* Dynamic Background */}
             <div className="absolute inset-0 z-0">
                 <div
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: 'url("/BackgroundImage/PlayBackground.jpeg")' }}
+                    style={{ backgroundImage: `url("${backgroundImage}")` }}
                 />
-                <div className="absolute inset-0 backdrop-blur-[2px] bg-candy-purple/10" />
+                <div className={`absolute inset-0 backdrop-blur-[1px] ${overlayColor}`} />
             </div>
 
+            {/* Background Animations */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-5">
                 <motion.div
                     animate={{ rotate: 360 }}
@@ -60,21 +75,25 @@ export default function MathPage() {
                     gameStarted={gameStarted}
                     gameOver={gameOver}
                     onQuit={() => router.push('/')}
-                    gameMode="math"
                     difficulty={difficulty}
+                    gameMode={gameMode}
                 />
 
                 <div className="flex-1 flex items-center justify-center mt-4 md:mt-2">
                     <AnimatePresence mode="wait">
                         {!gameStarted && !gameOver ? (
-                            <DifficultySelection onSelect={startGame} gameMode={GAME_MODES.MATH} />
+                            <DifficultySelection 
+                                onSelect={startGame} 
+                                gameMode={gameMode} 
+                            />
                         ) : gameOver ? (
                             <GameOverScreen
                                 score={score}
                                 difficulty={difficulty}
                                 isLoggedIn={isLoggedIn}
                                 onRestart={restartGame}
-                                gameMode="math"
+                                onLeaderboard={gameMode === GAME_MODES.BANANA ? () => setShowLeaderboard(true) : undefined}
+                                gameMode={gameMode}
                             />
                         ) : (
                             <motion.div
@@ -90,8 +109,8 @@ export default function MathPage() {
                                         onIncorrect={handleIncorrect}
                                         onTimeUp={handleTimeUp}
                                         isLoading={isLoading}
-                                        timeLimit={MATH_DIFFICULTY_SETTINGS[difficulty].time}
-                                        gameMode="math"
+                                        timeLimit={GAME_SETTINGS[gameMode][difficulty].time}
+                                        gameMode={gameMode}
                                     />
                                 )}
                             </motion.div>
@@ -99,6 +118,15 @@ export default function MathPage() {
                     </AnimatePresence>
                 </div>
             </div>
+
+            {/* Leaderboard only for Banana game */}
+            {gameMode === GAME_MODES.BANANA && (
+                <LeaderboardCard
+                    isModal
+                    isOpen={showLeaderboard}
+                    onClose={() => setShowLeaderboard(false)}
+                />
+            )}
         </main>
     );
 }

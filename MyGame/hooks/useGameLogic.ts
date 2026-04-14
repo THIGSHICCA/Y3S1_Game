@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useSound } from "@/context/SoundContext";
-import { Difficulty, DIFFICULTY_SETTINGS, GameMode } from "@/lib/constants";
+import { Difficulty, GAME_SETTINGS, GameMode } from "@/lib/constants";
 
 interface UseGameLogicProps<T> {
     gameMode: GameMode;
@@ -56,7 +56,7 @@ export function useGameLogic<T>({ gameMode, fetchPuzzle }: UseGameLogicProps<T>)
     const handleCorrect = () => {
         if (!difficulty) return;
         
-        const points = 100 * (DIFFICULTY_SETTINGS[difficulty].multiplier);
+        const points = 100 * (GAME_SETTINGS[gameMode][difficulty].multiplier);
         const newScore = score + points;
         setScore(newScore);
         playSound('correct');

@@ -1,11 +1,11 @@
+import { Difficulty } from "@/lib/constants";
+
 export interface MathPuzzle {
     question: string;
     solution: number;
 }
 
-export type MathDifficulty = 'easy' | 'medium' | 'hard';
-
-export const fetchMathPuzzle = async (difficulty: MathDifficulty): Promise<MathPuzzle> => {
+export const fetchMathPuzzle = async (difficulty: Difficulty = 'easy'): Promise<MathPuzzle> => {
     // We simulate an API call, but generate the math problem locally for instant response
     // and reliability, while adhering to the interface the user requested.
 

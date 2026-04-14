@@ -3,9 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Gamepad2, Shield, Zap, Flame, Play } from "lucide-react";
-import { BANANA_DIFFICULTY_SETTINGS, MATH_DIFFICULTY_SETTINGS, GameMode } from "@/lib/constants";
-
-type Difficulty = 'easy' | 'medium' | 'hard';
+import { GAME_SETTINGS, GameMode, Difficulty } from "@/lib/constants";
 
 interface DifficultySelectionProps {
     onSelect: (difficulty: Difficulty) => void;
@@ -22,7 +20,7 @@ const UI_SETTINGS = {
 const DifficultySelection: React.FC<DifficultySelectionProps> = ({ onSelect, isInline = false, gameMode = 'banana' }) => {
     const [selected, setSelected] = useState<Difficulty | null>(null);
 
-    const activeSettings = gameMode === 'banana' ? BANANA_DIFFICULTY_SETTINGS : MATH_DIFFICULTY_SETTINGS;
+    const activeSettings = GAME_SETTINGS[gameMode];
 
     const content = (
         <motion.div

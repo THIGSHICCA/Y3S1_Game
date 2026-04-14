@@ -4,13 +4,13 @@ import jwt from 'jsonwebtoken';
 const SECRET_KEY = process.env.JWT_SECRET || 'super_secret_jwt_key_fallback';
 
 export interface JWTPayload {
-    userId: string;
+    uid: string;
     email?: string;
 }
 
 /**
  * Signs a payload to generate a JWT token.
- * @param payload JWTPayload including userId and optionally email.
+ * @param payload JWTPayload including uid and optionally email.
  * @returns Signed JWT string.
  */
 export const signJWT = (payload: JWTPayload): string => {
