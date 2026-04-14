@@ -5,9 +5,12 @@ export interface MathPuzzle {
 
 export type MathDifficulty = 'easy' | 'medium' | 'hard';
 
-export const fetchMathPuzzle = async (difficulty: MathDifficulty = 'easy'): Promise<MathPuzzle> => {
-    let a: number, b: number, operator: string;
-    const operators = ['+', '-', '*', '/'];
+export const fetchMathPuzzle = async (difficulty: MathDifficulty): Promise<MathPuzzle> => {
+    // We simulate an API call, but generate the math problem locally for instant response
+    // and reliability, while adhering to the interface the user requested.
+
+    let a, b, operator;
+    const operators = ['+', '-', '*'];
 
     if (difficulty === 'easy') {
         a = Math.floor(Math.random() * 10) + 1;
@@ -15,44 +18,29 @@ export const fetchMathPuzzle = async (difficulty: MathDifficulty = 'easy'): Prom
         operator = operators[Math.floor(Math.random() * 2)]; // Only + and -
     } else if (difficulty === 'medium') {
         a = Math.floor(Math.random() * 20) + 1;
-        b = Math.floor(Math.random() * 15) + 1;
-        operator = operators[Math.floor(Math.random() * 3)]; // +, -, *
+        b = Math.floor(Math.random() * 20) + 1;
+        operator = operators[Math.floor(Math.random() * 3)];
     } else {
-        // Hard mode: Includes division with integer results
-        operator = operators[Math.floor(Math.random() * 4)];
-        if (operator === '/') {
-            b = Math.floor(Math.random() * 10) + 1;
-            const result = Math.floor(Math.random() * 10) + 1;
-            a = b * result; // Ensures integer division
-        } else {
-            a = Math.floor(Math.random() * 50) + 10;
-            b = Math.floor(Math.random() * 30) + 5;
-        }
+        a = Math.floor(Math.random() * 50) + 10;
+        b = Math.floor(Math.random() * 20) + 5;
+        operator = operators[Math.floor(Math.random() * 3)];
     }
 
-    let solution: number;
-    switch (operator) {
-        case '+': solution = a + b; break;
-        case '-': solution = a - b; break;
-        case '*': solution = a * b; break;
-        case '/': solution = a / b; break;
-        default: solution = a + b;
-    }
+    let question = `${a} ${operator} ${b}`;
+    let solution = eval(question);
 
-    // Ensure no negative results for easier/medium modes
-    if (solution < 0 && (difficulty === 'easy' || difficulty === 'medium')) {
-        [a, b] = [b, a];
-        solution = a - b;
+    // If solution is negative (for subtractions), flip them
+    if (solution < 0) {
+        question = `${b} ${operator} ${a}`;
+        solution = eval(question);
     }
-
-    const questionText = `${a} ${operator === '*' ? '×' : operator === '/' ? '÷' : operator} ${b}`;
 
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve({
-                question: `${questionText} = ?`,
+                question: `${question} = ?`,
                 solution: solution
             });
-        }, 400); // Slightly faster loading for Math
+        }, 500); // Simulate network delay
     });
 };

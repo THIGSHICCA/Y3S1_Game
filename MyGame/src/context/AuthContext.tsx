@@ -34,7 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 // If standard email/password user has not verified their email, log them out immediately
                 if (!fbUser.emailVerified) {
                     await signOut();
-                    await fetch('/api/auth/logout', { method: 'POST' }).catch(() => { });
+                    await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
                     setFirebaseUser(null);
                     setUser(null);
                     setIsLoggedIn(false);
@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 }
 
                 setFirebaseUser(fbUser);
-
+                
                 // Retrieve Firebase idToken and generate JWT via our backend
                 try {
                     const idToken = await fbUser.getIdToken();
@@ -61,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 setIsLoggedIn(true);
             } else {
                 // Not logged in in Firebase, ensure backend session is cleared
-                await fetch('/api/auth/logout', { method: 'POST' }).catch(() => { });
+                await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
                 setFirebaseUser(null);
                 setUser(null);
                 setIsLoggedIn(false);
@@ -98,7 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const logout = async () => {
         await signOut();
-        await fetch('/api/auth/logout', { method: 'POST' }).catch(() => { });
+        await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
         setUser(null);
         setFirebaseUser(null);
         setIsLoggedIn(false);
@@ -113,17 +113,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     return (
-        <AuthContext.Provider value={{
-            user,
-            firebaseUser,
-            isLoggedIn,
-            isLoading,
-            login,
-            register,
+        <AuthContext.Provider value={{ 
+            user, 
+            firebaseUser, 
+            isLoggedIn, 
+            isLoading, 
+            login, 
+            register, 
             loginWithGoogle,
             loginWithFacebook,
-            logout,
-            updateStats
+            logout, 
+            updateStats 
         }}>
             {children}
         </AuthContext.Provider>
