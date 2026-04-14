@@ -41,7 +41,7 @@ const Hero = () => {
                     <motion.div
                         key={link.name}
                         whileHover={{ scale: 1.1, x: 10 }}
-                        className="bg-white/20 backdrop-blur-xl p-4 rounded-2xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-yellow hover:border-white transition-all overflow-hidden"
+                        className="bg-white/20 backdrop-blur-xl p-4 rounded-xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-yellow hover:border-white transition-all overflow-hidden"
                     >
                         {link.href ? (
                             <Link href={link.href} className="flex items-center space-x-4">
@@ -99,7 +99,7 @@ const Hero = () => {
                 <motion.div
                     whileHover={{ scale: 1.1, x: -10 }}
                     onClick={toggleMute}
-                    className="bg-white/20 backdrop-blur-xl p-4 rounded-2xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-yellow hover:border-white transition-all"
+                    className="bg-white/20 backdrop-blur-xl p-4 rounded-xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-yellow hover:border-white transition-all"
                 >
                     <div className="flex items-center space-x-4">
                         <span className="text-white group-hover:text-candy-purple font-black uppercase text-sm tracking-widest">
@@ -117,7 +117,7 @@ const Hero = () => {
                 <motion.div
                     whileHover={{ scale: 1.1, x: -10 }}
                     onClick={() => router.push('/math')}
-                    className="bg-white/20 backdrop-blur-xl p-4 rounded-2xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-purple hover:border-white transition-all"
+                    className="bg-white/20 backdrop-blur-xl p-4 rounded-xl border-2 border-white/40 shadow-xl cursor-pointer group hover:bg-candy-purple hover:border-white transition-all"
                 >
                     <div className="flex items-center space-x-4">
                         <span className="text-white group-hover:text-white font-black uppercase text-sm tracking-widest">
@@ -185,7 +185,7 @@ const Hero = () => {
                         <motion.button
                             whileHover={{ scale: 1.1, rotate: -2 }}
                             whileTap={{ scale: 0.9 }}
-                            className="candy-button w-full sm:w-auto bg-candy-pink text-white px-12 py-6 rounded-[2.5rem] text-4xl font-black shadow-[0_12px_0_0_#ad1457] border-4 border-white flex items-center justify-center space-x-4"
+                            className="candy-button w-full sm:w-auto bg-candy-pink text-white px-12 py-6 rounded-xl text-4xl font-black shadow-[0_12px_0_0_#ad1457] border-4 border-white flex items-center justify-center space-x-4"
                             onClick={() => router.push('/play')}
                         >
                             <Play fill="currentColor" size={40} />

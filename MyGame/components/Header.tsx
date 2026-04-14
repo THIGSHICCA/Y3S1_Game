@@ -39,12 +39,12 @@ const Header = () => {
                     <motion.div
                         initial={{ y: -50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        className="pointer-events-auto bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-3"
+                        className="pointer-events-auto bg-white/5 backdrop-blur-xl rounded-xl p-3"
                     >
                         <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group px-2 sm:px-4">
                             <motion.div
                                 whileHover={{ scale: 1.1, rotate: 10 }}
-                                className="w-10 h-10 sm:w-14 sm:h-14 bg-candy-yellow rounded-xl sm:rounded-2xl flex items-center justify-center shadow-[0_4px_0_0_#f57f17] sm:shadow-[0_6px_0_0_#f57f17] border-none"
+                                className="w-10 h-10 sm:w-14 sm:h-14 bg-candy-yellow rounded-xl flex items-center justify-center shadow-[0_4px_0_0_#f57f17] sm:shadow-[0_6px_0_0_#f57f17] border-none"
                             >
                                 <span className="text-xl sm:text-3xl">🍌</span>
                             </motion.div>
@@ -68,7 +68,7 @@ const Header = () => {
                                 {link.type === "button" ? (
                                     <button
                                         onClick={link.onClick}
-                                        className={`pointer-events-auto flex items-center space-x-2 px-3 sm:px-6 py-3 sm:py-4 rounded-[1.5rem] sm:rounded-[2rem] border-2 sm:border-4 transition-all font-black uppercase tracking-widest text-[10px] sm:text-sm shadow-xl bg-white/10 backdrop-blur-xl border-white/30 text-white hover:bg-white/20 cursor-pointer`}
+                                        className={`pointer-events-auto flex items-center space-x-2 px-3 sm:px-6 py-3 sm:py-4 rounded-xl border-2 sm:border-4 transition-all font-black uppercase tracking-widest text-[10px] sm:text-sm shadow-xl bg-white/10 backdrop-blur-xl border-white/30 text-white hover:bg-white/20 cursor-pointer`}
                                     >
                                         {link.icon}
                                         <span className="hidden sm:inline">{link.name}</span>
@@ -76,7 +76,7 @@ const Header = () => {
                                 ) : (
                                     <Link
                                         href={link.href!}
-                                        className={`pointer-events-auto flex items-center space-x-2 px-3 sm:px-6 py-3 sm:py-4 rounded-[1.5rem] sm:rounded-[2rem] border-2 sm:border-4 transition-all font-black uppercase tracking-widest text-[10px] sm:text-sm shadow-xl ${pathname === link.href
+                                        className={`pointer-events-auto flex items-center space-x-2 px-3 sm:px-6 py-3 sm:py-4 rounded-xl border-2 sm:border-4 transition-all font-black uppercase tracking-widest text-[10px] sm:text-sm shadow-xl ${pathname === link.href
                                             ? 'bg-candy-yellow border-white text-white scale-105'
                                             : 'bg-white/10 backdrop-blur-xl border-white/30 text-white hover:bg-white/20'
                                             }`}

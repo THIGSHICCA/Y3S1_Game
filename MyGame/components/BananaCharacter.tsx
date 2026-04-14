@@ -5,14 +5,14 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const TalkingBanana = () => {
     const welcomePhrases = [
-        "Hey Buddy! Welcome to Banana Crush! 🍌✨",
-        "Ready to find the banana values?! 🚀",
-        "Peel the fun begin — let's crush it! 🏆",
+        "Hey Buddy! Welcome to Banana Crush! 🍌",
+        "Ready to find the banana's values?! 🚀",
+        "Peel the fun begin, let's crush it! 🏆",
         "Hi Buddy! Time to get a-peeling! 😄",
         "Welcome aboard the banana boat! 🍌",
         "Hey Buddy! Let's split some high scores! ",
         "Banana Crush is HAPPY you're here! 💛",
-        "Wanna make some sweet memories? Let's play! 🎉",
+        "Wanna make some sweet memories? Let's play!",
     ];
 
     const [index, setIndex] = useState(0);

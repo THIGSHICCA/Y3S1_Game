@@ -63,8 +63,8 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                 ) : (
                     <div className="space-y-8">
 
-                        <div className="flex items-center space-x-6 p-6 bg-gray-50 rounded-[2rem] border-4 border-candy-yellow/20">
-                            <div className="w-20 h-20 bg-candy-yellow rounded-[1.5rem] flex items-center justify-center shadow-lg border-4 border-white">
+                        <div className="flex items-center space-x-6 p-6 bg-gray-50 rounded-xl border-4 border-candy-yellow/20">
+                            <div className="w-20 h-20 bg-candy-yellow rounded-xl flex items-center justify-center shadow-lg border-4 border-white">
                                 <UserCircle size={48} className="text-white" strokeWidth={2.5} />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -81,7 +81,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                         </div>
 
                         <div className="grid grid-cols-3 gap-3">
-                            <div className="bg-candy-yellow/5 p-5 rounded-[2rem] border-4 border-candy-yellow/10 text-center group hover:border-candy-yellow/30 transition-all">
+                            <div className="bg-candy-yellow/5 p-5 rounded-xl border-4 border-candy-yellow/10 text-center group hover:border-candy-yellow/30 transition-all">
                                 <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 shadow-sm border-2 border-candy-yellow/10">
                                     <Trophy size={20} className="text-candy-yellow" />
                                 </div>
@@ -89,7 +89,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                                 <p className="text-xl font-black text-candy-yellow">{bananaBest.toLocaleString()}</p>
                             </div>
 
-                            <div className="bg-candy-pink/5 p-5 rounded-[2rem] border-4 border-candy-pink/10 text-center group hover:border-candy-pink/30 transition-all">
+                            <div className="bg-candy-pink/5 p-5 rounded-xl border-4 border-candy-pink/10 text-center group hover:border-candy-pink/30 transition-all">
                                 <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 shadow-sm border-2 border-candy-pink/10">
                                     <Trophy size={20} className="text-candy-pink" />
                                 </div>
@@ -97,7 +97,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                                 <p className="text-xl font-black text-candy-pink">{mathBest.toLocaleString()}</p>
                             </div>
 
-                            <div className="bg-candy-purple/5 p-5 rounded-[2rem] border-4 border-candy-purple/10 text-center group hover:border-candy-purple/30 transition-all">
+                            <div className="bg-candy-purple/5 p-5 rounded-xl border-4 border-candy-purple/10 text-center group hover:border-candy-purple/30 transition-all">
                                 <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 shadow-sm border-2 border-candy-purple/10">
                                     <Gamepad2 size={20} className="text-candy-purple" />
                                 </div>
@@ -108,7 +108,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
 
 
 
-                        <div className="space-y-4 p-6 bg-candy-purple/5 rounded-[2rem] border-4 border-candy-purple/10">
+                        <div className="space-y-4 p-6 bg-candy-purple/5 rounded-xl border-4 border-candy-purple/10">
                             <div className="flex items-center space-x-3 mb-2">
                                 <Settings size={18} className="text-candy-purple" />
                                 <h4 className="text-xs font-black text-candy-purple uppercase tracking-widest">Game Settings</h4>
@@ -140,7 +140,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                         </div>
 
                         <div className="space-y-3">
-                            <div className="flex items-center justify-between p-5 bg-gray-50 rounded-2xl border-2 border-gray-100/50">
+                            <div className="flex items-center justify-between p-5 bg-gray-50 rounded-xl border-2 border-gray-100/50">
                                 <div className="flex items-center space-x-3">
                                     <Calendar size={18} className="text-gray-400" />
                                     <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Member Since</span>
@@ -148,7 +148,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                                 <span className="text-xs font-black text-candy-purple uppercase">{user?.joinDate}</span>
                             </div>
 
-                            <div className="flex items-center justify-between p-5 bg-gray-50 rounded-2xl border-2 border-gray-100/50">
+                            <div className="flex items-center justify-between p-5 bg-gray-50 rounded-xl border-2 border-gray-100/50">
                                 <div className="flex items-center space-x-3">
                                     <UserCircle size={18} className="text-gray-400" />
                                     <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Account ID</span>
@@ -162,7 +162,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
                         <div className="pt-4">
                             <button
                                 onClick={handleLogout}
-                                className="w-full bg-red-50 hover:bg-red-100 text-red-500 py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-sm flex items-center justify-center space-x-3 transition-all border-4 border-red-100/50"
+                                className="w-full bg-red-50 hover:bg-red-100 text-red-500 py-5 rounded-xl font-black uppercase tracking-widest text-sm flex items-center justify-center space-x-3 transition-all border-4 border-red-100/50"
                             >
                                 <LogOut size={20} />
                                 <span>Logout from Banana Crush</span>

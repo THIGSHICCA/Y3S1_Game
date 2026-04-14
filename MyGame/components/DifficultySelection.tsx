@@ -28,9 +28,9 @@ const DifficultySelection: React.FC<DifficultySelectionProps> = ({ onSelect, isI
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 1.1, opacity: 0, y: -20 }}
             transition={{ type: "spring", damping: 20, stiffness: 300 }}
-            className={`bg-white rounded-[2.5rem] sm:rounded-[3.5rem] p-6 sm:p-8 md:p-12 text-center max-w-2xl border-4 sm:border-8 border-candy-yellow shadow-[0_10px_0_0_#f57f17] sm:shadow-[0_20px_0_0_#f57f17] relative ${isInline ? 'w-full' : ''}`}
+            className={`bg-white rounded-xl p-6 sm:p-8 md:p-12 text-center max-w-2xl border-4 sm:border-8 border-candy-yellow shadow-[0_10px_0_0_#f57f17] sm:shadow-[0_20px_0_0_#f57f17] relative ${isInline ? 'w-full' : ''}`}
         >
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-candy-yellow rounded-2xl sm:rounded-[2rem] flex items-center justify-center mx-auto mb-4 sm:mb-8 shadow-inner">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-candy-yellow rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-8 shadow-inner">
                 <Gamepad2 size={32} className="text-white sm:size-12" />
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-candy-purple mb-2 sm:mb-4 uppercase">Choose Your Vibe</h1>
@@ -46,7 +46,7 @@ const DifficultySelection: React.FC<DifficultySelectionProps> = ({ onSelect, isI
                             whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setSelected(key)}
-                            className={`${ui.bg} border-4 transition-all duration-300 ${isSelected ? `border-[${ui.color.replace('text-', '')}] ring-4 ring-candy-yellow/20 shadow-xl scale-105` : `${ui.border} shadow-md opacity-70 hover:opacity-100`} p-4 sm:p-6 rounded-2xl sm:rounded-[2.5rem] flex flex-col items-center group`}
+                            className={`${ui.bg} border-4 transition-all duration-300 ${isSelected ? `border-[${ui.color.replace('text-', '')}] ring-4 ring-candy-yellow/20 shadow-xl scale-105` : `${ui.border} shadow-md opacity-70 hover:opacity-100`} p-4 sm:p-6 rounded-xl flex flex-col items-center group`}
                         >
                             <div className={`${ui.color} mb-2 sm:mb-4 transition-transform ${isSelected ? 'scale-110' : 'group-hover:scale-110'}`}>
                                 <ui.icon size={32} className="sm:size-12" />
@@ -68,7 +68,7 @@ const DifficultySelection: React.FC<DifficultySelectionProps> = ({ onSelect, isI
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => onSelect(selected)}
-                            className={`w-full max-w-sm mx-auto candy-button flex items-center justify-center gap-3 py-4 sm:py-5 rounded-2xl sm:rounded-3xl text-lg sm:text-xl font-black shadow-[0_6px_0_0_#ad1457] border-4 border-white bg-candy-pink text-white`}
+                            className={`w-full max-w-sm mx-auto candy-button flex items-center justify-center gap-3 py-4 sm:py-5 rounded-xl text-lg sm:text-xl font-black shadow-[0_6px_0_0_#ad1457] border-4 border-white bg-candy-pink text-white`}
                         >
                             <Play fill="currentColor" size={24} />
                             <span>START {selected.toUpperCase()}</span>
@@ -79,13 +79,7 @@ const DifficultySelection: React.FC<DifficultySelectionProps> = ({ onSelect, isI
         </motion.div>
     );
 
-    if (isInline) return content;
-
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-candy-purple/40 backdrop-blur-md">
-            {content}
-        </div>
-    );
+    return content;
 };
 
 export default DifficultySelection;

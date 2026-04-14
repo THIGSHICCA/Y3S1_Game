@@ -62,7 +62,7 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
         >
             <div className="space-y-4">
                 {!isLoggedIn ? (
-                    <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-2xl border-4 border-dashed border-candy-purple/20 text-center">
+                    <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-xl border-4 border-dashed border-candy-purple/20 text-center">
                         <div className="text-5xl mb-4">🔒</div>
                         <p className="font-black text-candy-purple mb-2 uppercase tracking-tight">Leaderboard Locked</p>
                         <p className="text-gray-400 font-bold text-xs mb-6 uppercase tracking-widest leading-relaxed">
@@ -70,7 +70,7 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
                         </p>
                         <button
                             onClick={() => router.push('/signin?returnUrl=/play')}
-                            className="candy-button bg-candy-pink text-white px-8 py-3 rounded-2xl font-black shadow-[0_6px_0_0_#ad1457] border-2 border-white"
+                            className="candy-button bg-candy-pink text-white px-8 py-3 rounded-xl font-black shadow-[0_6px_0_0_#ad1457] border-2 border-white"
                         >
                             SIGN IN NOW
                         </button>
@@ -103,7 +103,7 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
                                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-candy-purple"></div>
                             </div>
                         ) : leaderboard.length === 0 ? (
-                            <div className="p-8 text-center bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                            <div className="p-8 text-center bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
                                 <p className="text-gray-400 font-bold text-sm uppercase">No leaders found for this level yet!</p>
                                 <p className="text-gray-400 font-bold text-[10px] uppercase mt-1">Be the first to score!</p>
                             </div>
@@ -114,7 +114,7 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
                                     initial={{ x: -20, opacity: 0 }}
                                     animate={{ x: 0, opacity: 1 }}
                                     transition={{ delay: index * 0.1 }}
-                                    className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border-4 border-candy-yellow/20 hover:border-candy-yellow transition-all group"
+                                    className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border-4 border-candy-yellow/20 hover:border-candy-yellow transition-all group"
                                 >
                                     <div className="flex items-center space-x-4">
                                         <span className="text-2xl w-8 text-center font-black text-candy-purple">
@@ -148,14 +148,14 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
                 )}
             </div>
 
-            <div className="mt-4 bg-candy-purple/5 p-4 rounded-3xl border-4 border-dashed border-candy-purple/20 text-center relative overflow-hidden">
+            <div className="mt-4 bg-candy-purple/5 p-4 rounded-xl border-4 border-dashed border-candy-purple/20 text-center relative overflow-hidden">
                 <p className="text-candy-purple font-black text-sm uppercase mb-2">Your Current Rank</p>
                 <p className="text-gray-400 font-bold text-xs mb-4">Play more games to appear on the global leaderboard!</p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <button
                         onClick={() => router.push('/play')}
-                        className="candy-button bg-candy-yellow text-white px-8 py-3 rounded-2xl font-black shadow-[0_6px_0_0_#f57f17] border-2 border-white inline-flex items-center space-x-2 w-full sm:w-auto justify-center"
+                        className="candy-button bg-candy-yellow text-white px-8 py-3 rounded-xl font-black shadow-[0_6px_0_0_#f57f17] border-2 border-white inline-flex items-center space-x-2 w-full sm:w-auto justify-center"
                     >
                         <span>PLAY NOW</span>
                     </button>
@@ -166,7 +166,7 @@ const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ isModal = false, isOp
                                 logout();
                                 if (onClose) onClose();
                             }}
-                            className="bg-candy-pink/10 hover:bg-candy-pink/20 text-candy-pink px-6 py-3 rounded-2xl font-black text-sm uppercase tracking-wider border-2 border-candy-pink/20 transition-all flex items-center space-x-2 w-full sm:w-auto justify-center"
+                            className="bg-candy-pink/10 hover:bg-candy-pink/20 text-candy-pink px-6 py-3 rounded-xl font-black text-sm uppercase tracking-wider border-2 border-candy-pink/20 transition-all flex items-center space-x-2 w-full sm:w-auto justify-center"
                         >
                             <LogOut size={18} />
                             <span>Log Out</span>

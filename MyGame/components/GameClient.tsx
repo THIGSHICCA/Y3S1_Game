@@ -55,7 +55,21 @@ export default function GameClient({
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                     style={{ backgroundImage: `url("${backgroundImage}")` }}
                 />
-                <div className={`absolute inset-0 backdrop-blur-[1px] ${overlayColor}`} />
+                
+                {/* Global Subtle Overlay (No Blur) */}
+                <div className={`absolute inset-0 ${overlayColor} opacity-20`} />
+
+                {/* Transition Blur Overlay (Difficulty & Game Over) */}
+                <AnimatePresence>
+                    {(!gameStarted || gameOver) && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 z-10 backdrop-blur-xl bg-white/10"
+                        />
+                    )}
+                </AnimatePresence>
             </div>
 
             {/* Background Animations */}
@@ -67,7 +81,7 @@ export default function GameClient({
                 />
             </div>
 
-            <div className="max-w-6xl mx-auto relative z-10 w-full h-full flex flex-col">
+            <div className="w-full relative z-10">
                 <GameHUD
                     score={score}
                     lives={lives}
@@ -78,8 +92,10 @@ export default function GameClient({
                     difficulty={difficulty}
                     gameMode={gameMode}
                 />
+            </div>
 
-                <div className="flex-1 flex items-center justify-center mt-4 md:mt-2">
+            <div className="max-w-6xl mx-auto relative z-10 w-full h-full flex flex-col">
+                <div className="flex-1 flex items-center justify-center -translate-y-4 sm:-translate-y-8">
                     <AnimatePresence mode="wait">
                         {!gameStarted && !gameOver ? (
                             <DifficultySelection 

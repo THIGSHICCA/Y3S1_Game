@@ -119,7 +119,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin 
                 </p>
                 <button
                     onClick={onSwitchToLogin ? onSwitchToLogin : () => router.push("/signin")}
-                    className="mt-6 candy-button w-full bg-candy-pink text-white py-4 rounded-2xl font-black shadow-[0_6px_0_0_#ad1457] active:shadow-none transition-all uppercase tracking-wider border-4 border-white"
+                    className="mt-6 candy-button w-full bg-candy-pink text-white py-4 rounded-xl font-black shadow-[0_6px_0_0_#ad1457] active:shadow-none transition-all uppercase tracking-wider border-4 border-white"
                 >
                     Return to Login
                 </button>
@@ -148,7 +148,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin 
                             value={username}
                             onChange={handleUsernameChange}
                             onBlur={() => setUsernameTouched(true)}
-                            className={`block w-full pl-12 pr-12 py-4 bg-white border-4 rounded-2xl focus:ring-0 transition-all font-bold text-gray-700 placeholder:text-gray-300 ${
+                            className={`block w-full pl-12 pr-12 py-4 bg-white border-4 rounded-xl focus:ring-0 transition-all font-bold text-gray-700 placeholder:text-gray-300 ${
                                 showUsernameError || showUsernameEmpty
                                     ? "border-red-300 focus:border-red-400"
                                     : showUsernameSuccess
@@ -205,7 +205,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin 
                             value={email}
                             onChange={handleEmailChange}
                             onBlur={() => setEmailTouched(true)}
-                            className={`block w-full pl-12 pr-12 py-4 bg-white border-4 rounded-2xl focus:ring-0 transition-all font-bold text-gray-700 placeholder:text-gray-300 ${
+                            className={`block w-full pl-12 pr-12 py-4 bg-white border-4 rounded-xl focus:ring-0 transition-all font-bold text-gray-700 placeholder:text-gray-300 ${
                                 showEmailError
                                     ? "border-red-300 focus:border-red-400"
                                     : showEmailSuccess
@@ -262,7 +262,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin 
                             value={password}
                             onChange={handlePasswordChange}
                             onBlur={() => setPasswordTouched(true)}
-                            className={`block w-full pl-12 pr-4 py-4 bg-white border-4 rounded-2xl focus:ring-0 transition-all font-bold text-gray-700 placeholder:text-gray-300 ${
+                            className={`block w-full pl-12 pr-4 py-4 bg-white border-4 rounded-xl focus:ring-0 transition-all font-bold text-gray-700 placeholder:text-gray-300 ${
                                 passwordTouched && !passwordValidation.valid
                                     ? "border-red-300 focus:border-red-400"
                                     : passwordTouched && passwordValidation.valid
@@ -365,7 +365,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin 
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={isSubmitting || !canSubmit}
-                className="candy-button w-full bg-candy-pink text-white py-5 rounded-2xl text-xl font-black shadow-[0_8px_0_0_#ad1457] active:shadow-none transition-all flex items-center justify-center space-x-3 border-4 border-white disabled:opacity-70 disabled:cursor-not-allowed"
+                className="candy-button w-full bg-candy-pink text-white py-5 rounded-xl text-xl font-black shadow-[0_8px_0_0_#ad1457] active:shadow-none transition-all flex items-center justify-center space-x-3 border-4 border-white disabled:opacity-70 disabled:cursor-not-allowed"
             >
                 <span>{isSubmitting ? "JOINING..." : "JOIN THE PARTY"}</span>
                 <ArrowRight size={24} />
