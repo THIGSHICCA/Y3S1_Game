@@ -5,7 +5,7 @@ export interface BananaPuzzle {
 
 export const fetchPuzzle = async (): Promise<BananaPuzzle> => {
     try {
-        const response = await fetch('https://marcconrad.com/uob/banana/api.php?out=json');
+        const response = await fetch('/api/banana');
         if (!response.ok) {
             throw new Error('Failed to fetch puzzle');
         }

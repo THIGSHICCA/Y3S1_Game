@@ -16,7 +16,7 @@ interface AuthContextType {
     loginWithGoogle: () => Promise<void>;
     loginWithFacebook: () => Promise<void>;
     logout: () => Promise<void>;
-    updateStats: (score: number, game?: "banana" | "math") => Promise<void>;
+    updateStats: (score: number, game?: "banana" | "math", difficulty?: "easy" | "medium" | "hard") => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -104,9 +104,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsLoggedIn(false);
     };
 
-    const updateStats = async (score: number, game: "banana" | "math" = "banana") => {
+    const updateStats = async (score: number, game: "banana" | "math" = "banana", difficulty: "easy" | "medium" | "hard" = "easy") => {
         if (!firebaseUser) return;
-        await updateUserStats(firebaseUser.uid, score, game);
+        await updateUserStats(firebaseUser.uid, score, game, difficulty);
         // Refresh local user data
         const refreshed = await getUserData(firebaseUser.uid);
         setUser(refreshed);

@@ -4,8 +4,12 @@ import { db } from "@/lib/firebase";
 export interface UserData {
     email: string;
     username: string;
-    bananaHighScore: number;
-    mathHighScore: number;
+    bananaHighScore_easy?: number;
+    bananaHighScore_medium?: number;
+    bananaHighScore_hard?: number;
+    mathHighScore_easy?: number;
+    mathHighScore_medium?: number;
+    mathHighScore_hard?: number;
     totalGames: number;
     joinDate: string;
 }
@@ -27,11 +31,13 @@ export const getUserData = async (uid: string): Promise<UserData | null> => {
  * @param uid       Firebase user UID
  * @param score     Final score of this game session
  * @param game      'banana' or 'math' — determines which high score to compare
+ * @param difficulty 'easy' | 'medium' | 'hard'
  */
 export const updateUserStats = async (
     uid: string,
     score: number,
-    game: "banana" | "math"
+    game: "banana" | "math",
+    difficulty: "easy" | "medium" | "hard"
 ) => {
     const docRef = doc(db, "users", uid);
     const docSnap = await getDoc(docRef);
@@ -39,8 +45,8 @@ export const updateUserStats = async (
     if (!docSnap.exists()) return;
 
     const data = docSnap.data() as UserData;
-    const scoreField = game === "banana" ? "bananaHighScore" : "mathHighScore";
-    const currentHigh = data[scoreField] ?? 0;
+    const scoreField = `${game}HighScore_${difficulty}` as keyof UserData;
+    const currentHigh = (data[scoreField] as number) ?? 0;
 
     const updates: Record<string, unknown> = {
         totalGames: increment(1),
@@ -53,13 +59,20 @@ export const updateUserStats = async (
     await updateDoc(docRef, updates);
 };
 
+import { where } from "firebase/firestore";
+
 /**
  * Fetch top players for the leaderboard.
  */
-export const getTopPlayers = async (game: "banana" | "math" = "banana", max: number = 5): Promise<UserData[]> => {
-    const scoreField = game === "banana" ? "bananaHighScore" : "mathHighScore";
+export const getTopPlayers = async (
+    game: "banana" | "math" = "banana", 
+    difficulty: "easy" | "medium" | "hard" = "easy",
+    max: number = 5
+): Promise<UserData[]> => {
+    const scoreField = `${game}HighScore_${difficulty}`;
     const q = query(
         collection(db, "users"),
+        where(scoreField, ">", 0),
         orderBy(scoreField, "desc"),
         limit(max)
     );

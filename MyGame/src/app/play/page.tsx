@@ -10,7 +10,7 @@ import GameHUD from "@/components/GameHUD";
 import DifficultySelection from "@/components/DifficultySelection";
 import GameOverScreen from "@/components/GameOverScreen";
 import LeaderboardCard from "@/components/LeaderboardCard";
-import { GAME_MODES, DIFFICULTY_SETTINGS } from "@/lib/constants";
+import { GAME_MODES, BANANA_DIFFICULTY_SETTINGS } from "@/lib/constants";
 
 export default function PlayPage() {
     const router = useRouter();
@@ -68,7 +68,7 @@ export default function PlayPage() {
                 <div className="flex-1 flex items-center justify-center">
                     <AnimatePresence mode="wait">
                         {!gameStarted && !gameOver ? (
-                            <DifficultySelection onSelect={startGame} />
+                            <DifficultySelection onSelect={startGame} gameMode={GAME_MODES.BANANA} />
                         ) : gameOver ? (
                             <GameOverScreen
                                 score={score}
@@ -92,7 +92,7 @@ export default function PlayPage() {
                                         onIncorrect={handleIncorrect}
                                         onTimeUp={handleTimeUp}
                                         isLoading={isLoading}
-                                        timeLimit={DIFFICULTY_SETTINGS[difficulty].time}
+                                        timeLimit={BANANA_DIFFICULTY_SETTINGS[difficulty].time}
                                         gameMode="banana"
                                     />
                                 )}

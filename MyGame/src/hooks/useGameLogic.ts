@@ -25,13 +25,12 @@ export function useGameLogic<T>({ gameMode, fetchPuzzle }: UseGameLogicProps<T>)
 
     // Initial high score loading
     useEffect(() => {
-        if (isLoggedIn && user) {
-            const currentHighScore = gameMode === 'banana'
-                ? (user.bananaHighScore ?? 0)
-                : (user.mathHighScore ?? 0);
+        if (isLoggedIn && user && difficulty) {
+            const scoreField = `${gameMode}HighScore_${difficulty}` as keyof typeof user;
+            const currentHighScore = (user[scoreField] as number) ?? 0;
             setHighScore(currentHighScore);
         }
-    }, [isLoggedIn, user, gameMode]);
+    }, [isLoggedIn, user, gameMode, difficulty]);
 
     const loadNewPuzzle = useCallback(async (currentDifficulty?: Difficulty) => {
         setIsLoading(true);
@@ -72,10 +71,10 @@ export function useGameLogic<T>({ gameMode, fetchPuzzle }: UseGameLogicProps<T>)
 
     const handleGameOver = useCallback((finalScore: number) => {
         playSound('gameover');
-        if (isLoggedIn) {
-            updateStats(finalScore, gameMode);
+        if (isLoggedIn && difficulty && gameMode === 'banana') {
+            updateStats(finalScore, gameMode, difficulty);
         }
-    }, [isLoggedIn, updateStats, playSound, gameMode]);
+    }, [isLoggedIn, updateStats, playSound, gameMode, difficulty]);
 
     const handleIncorrect = () => {
         playSound('incorrect');

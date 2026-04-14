@@ -26,7 +26,11 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
     useEffect(() => {
         if (isLoading || isChecking || feedback) return;
 
-        setTimeLeft(timeLimit);
+        // Only reset the timer if it's not the Banana game (Math game resets per question)
+        if (gameMode !== 'banana') {
+            setTimeLeft(timeLimit);
+        }
+
         const timer = setInterval(() => {
             setTimeLeft((prev) => {
                 if (prev <= 1) {
@@ -39,7 +43,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [puzzle, isLoading, isChecking, feedback, timeLimit]);
+    }, [puzzle, isLoading, isChecking, feedback, timeLimit, gameMode]);
 
     // Auto-focus input on mount and after submission
     useEffect(() => {

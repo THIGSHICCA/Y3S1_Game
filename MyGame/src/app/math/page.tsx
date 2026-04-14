@@ -9,7 +9,7 @@ import GameBoard from "@/components/GameBoard";
 import GameHUD from "@/components/GameHUD";
 import DifficultySelection from "@/components/DifficultySelection";
 import GameOverScreen from "@/components/GameOverScreen";
-import { GAME_MODES } from "@/lib/constants";
+import { GAME_MODES, MATH_DIFFICULTY_SETTINGS } from "@/lib/constants";
 
 export default function MathPage() {
     const router = useRouter();
@@ -67,7 +67,7 @@ export default function MathPage() {
                 <div className="flex-1 flex items-center justify-center mt-4 md:mt-2">
                     <AnimatePresence mode="wait">
                         {!gameStarted && !gameOver ? (
-                            <DifficultySelection onSelect={startGame} />
+                            <DifficultySelection onSelect={startGame} gameMode={GAME_MODES.MATH} />
                         ) : gameOver ? (
                             <GameOverScreen
                                 score={score}
@@ -90,7 +90,7 @@ export default function MathPage() {
                                         onIncorrect={handleIncorrect}
                                         onTimeUp={handleTimeUp}
                                         isLoading={isLoading}
-                                        timeLimit={difficulty === 'easy' ? 30 : difficulty === 'medium' ? 15 : 10}
+                                        timeLimit={MATH_DIFFICULTY_SETTINGS[difficulty].time}
                                         gameMode="math"
                                     />
                                 )}
