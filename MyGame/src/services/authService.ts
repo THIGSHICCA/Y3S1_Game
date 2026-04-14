@@ -6,6 +6,7 @@ import {
     GoogleAuthProvider,
     FacebookAuthProvider,
     signInWithPopup,
+    sendEmailVerification
 } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
@@ -103,6 +104,10 @@ export const signUp = async (email: string, password: string, username: string) 
         createdAt: serverTimestamp(),
     });
 
+    // Send email verification and immediately sign out
+    await sendEmailVerification(user);
+    await firebaseSignOut(auth);
+
     return userCredential;
 };
 
@@ -113,7 +118,16 @@ export const signIn = async (email: string, password: string) => {
     const emailCheck = validateEmail(email);
     if (!emailCheck.valid) throw new Error(emailCheck.message);
     if (!password) throw new Error("Password is required.");
-    return signInWithEmailAndPassword(auth, email, password);
+    
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    
+    // Check if email is verified
+    if (!userCredential.user.emailVerified) {
+        await firebaseSignOut(auth);
+        throw new Error("Please verify your email address before logging in. Check your inbox.");
+    }
+    
+    return userCredential;
 };
 
 /**

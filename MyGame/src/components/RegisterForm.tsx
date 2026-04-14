@@ -27,6 +27,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin 
     const router = useRouter();
     const searchParams = useSearchParams();
 
+    const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
+
     const emailValidation = validateEmail(email);
     const passwordValidation = validatePassword(password);
     const strength = useMemo(() => getPasswordStrength(password), [password]);
@@ -60,12 +62,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin 
         setIsSubmitting(true);
         try {
             await register(email, password, username);
-            const returnUrl = searchParams.get("returnUrl") || "/";
-            if (onSuccess) {
-                onSuccess();
-            } else {
-                router.push(returnUrl);
-            }
+            setIsRegistrationSuccess(true);
         } catch (err: unknown) {
             console.error("Registration error:", err);
             const firebaseErr = err as { code?: string; message?: string };
@@ -102,6 +99,33 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin 
         medium: "Medium",
         strong: "Strong 💪",
     };
+
+    if (isRegistrationSuccess) {
+        return (
+            <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center space-y-6 py-8"
+            >
+                <CheckCircle2 className="w-24 h-24 text-green-400 mx-auto drop-shadow-md" />
+                <h3 className="text-3xl font-black text-candy-purple uppercase tracking-widest text-shadow-bubbly drop-shadow-[0_2px_0_#9c27b0]">
+                    Verify Email
+                </h3>
+                <p className="text-gray-500 font-bold px-4">
+                    A magical verification link has been sent to <br/>
+                    <span className="text-candy-pink underline decoration-candy-pink/30">{email}</span>.
+                    <br/><br/>
+                    Please open your inbox and verify your email to begin playing!
+                </p>
+                <button
+                    onClick={onSwitchToLogin ? onSwitchToLogin : () => router.push("/signin")}
+                    className="mt-6 candy-button w-full bg-candy-pink text-white py-4 rounded-2xl font-black shadow-[0_6px_0_0_#ad1457] active:shadow-none transition-all uppercase tracking-wider border-4 border-white"
+                >
+                    Return to Login
+                </button>
+            </motion.div>
+        );
+    }
 
     return (
         <form onSubmit={handleSubmit} className="space-y-5">
