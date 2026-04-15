@@ -95,7 +95,7 @@ export default function GameClient({
             </div>
 
             <div className="max-w-6xl mx-auto relative z-10 w-full h-full flex flex-col">
-                <div className="flex-1 flex items-center justify-center -translate-y-4 sm:-translate-y-8">
+                <div className="flex-1 flex items-center justify-center -translate-y-12 sm:-translate-y-16">
                     <AnimatePresence mode="wait">
                         {!gameStarted && !gameOver ? (
                             <DifficultySelection 
