@@ -25,7 +25,7 @@ const Header = () => {
     const [showProfile, setShowProfile] = useState(false);
 
     const navLinks = [
-        ...(pathname === '/play' ? [] : [{ name: "Play", href: "/play", icon: <Gamepad2 size={20} /> }]),
+        ...(pathname === '/play' ? [] : [{ name: "Play Banana Crush", href: "/play", icon: <Gamepad2 size={20} /> }]),
         ...(pathname === '/math' ? [] : [{ name: "Leaders", type: "button", onClick: () => setShowLeaderboard(true), icon: <Trophy size={20} /> }]),
     ];
 

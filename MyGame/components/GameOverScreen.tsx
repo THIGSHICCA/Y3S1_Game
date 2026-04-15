@@ -30,7 +30,7 @@ const GameOverScreen: React.FC<GameOverScreenProps> = ({
             animate={{ y: 0, opacity: 1 }}
             className={`bg-white rounded-xl p-4 sm:p-8 text-center max-w-lg border-4 sm:border-8 ${isMath ? 'border-candy-purple shadow-[0_10px_0_0_#4a148c] sm:shadow-[0_20px_0_0_#4a148c]' : 'border-red-400 shadow-[0_10px_0_0_#b71c1c] sm:shadow-[0_20px_0_0_#b71c1c]'}`}
         >
-            <div className="text-4xl sm:text-6xl mb-2 sm:mb-4">{isMath ? '🧠✨' : '🍌😭'}</div>
+            <div className="text-4xl sm:text-6xl mb-2 sm:mb-4">{isMath ? '🧠' : '🍌'}</div>
             <h1 className={`text-3xl sm:text-5xl font-black mb-1 leading-tight uppercase ${isMath ? 'text-candy-purple' : 'text-red-600'}`}>
                 {isMath ? "Time's Up!" : "Time Out!"}
             </h1>
