@@ -251,17 +251,15 @@ const GameBoard: React.FC<GameBoardProps> = ({ puzzle, onCorrect, onIncorrect, o
 
                         {/* Submit Button */}
                         <div className="flex space-x-2">
-                            {isMath && (
-                                <motion.button
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    onClick={handleClear}
-                                    disabled={!answer || isChecking}
-                                    className="px-6 bg-gray-100 text-gray-400 font-black rounded-xl border-2 border-gray-200 hover:bg-gray-200 uppercase tracking-widest text-xs"
-                                >
-                                    Clear
-                                </motion.button>
-                            )}
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={handleClear}
+                                disabled={!answer || isChecking}
+                                className="px-6 py-3 bg-gray-100 text-gray-500 font-black rounded-xl border-2 border-gray-200 hover:bg-gray-200 hover:text-gray-700 transition-all uppercase tracking-widest text-xs disabled:opacity-30 disabled:cursor-not-allowed"
+                            >
+                                Clear
+                            </motion.button>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}

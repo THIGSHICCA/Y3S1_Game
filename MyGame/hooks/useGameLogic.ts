@@ -84,6 +84,9 @@ export function useGameLogic<T>({ gameMode, fetchPuzzle }: UseGameLogicProps<T>)
         if (newLives <= 0) {
             setGameOver(true);
             handleGameOver(score);
+        } else {
+            // Refresh the API to get a new puzzle after an incorrect answer
+            loadNewPuzzle(difficulty ?? undefined);
         }
     };
 
