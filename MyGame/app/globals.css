@@ -24,3 +24,52 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer utilities {
+  .text-shadow-bubbly {
+    text-shadow: 0 4px 0 rgba(0, 0, 0, 0.1),
+      0 8px 0 rgba(0, 0, 0, 0.1);
+    -webkit-text-stroke: 2px white;
+  }
+
+  .candy-button {
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .candy-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2.5rem 2.5rem 0 0;
+    pointer-events: none;
+  }
+
+  .candy-button:hover {
+    transform: translateY(-4px);
+    filter: brightness(1.1);
+  }
+
+  .candy-button:active {
+    transform: translateY(4px);
+  }
+}
+
+:root {
+  --candy-pink: #ff4081;
+  --candy-yellow: #ffd600;
+  --candy-purple: #7c4dff;
+  --candy-blue: #00b0ff;
+}
+
+@theme {
+  --color-candy-pink: var(--candy-pink);
+  --color-candy-yellow: var(--candy-yellow);
+  --color-candy-purple: var(--candy-purple);
+  --color-candy-blue: var(--candy-blue);
+}
