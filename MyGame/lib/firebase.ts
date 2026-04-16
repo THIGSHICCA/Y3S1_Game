@@ -12,7 +12,7 @@ const firebaseConfig = {
     measurementId: "G-FDS8XDGEW4"
 };
 
-// Prevent re-initializing on hot-reload in Next.js
+// Prevent re-initializing on hot-reload 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
 export const auth = getAuth(app);

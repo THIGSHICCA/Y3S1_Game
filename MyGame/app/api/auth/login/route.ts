@@ -26,8 +26,8 @@ export async function POST(request: Request) {
         // Custom JWT is now safely generated for our own secure session
         const token = signJWT({ uid, email });
 
-        const response = NextResponse.json({ 
-            success: true, 
+        const response = NextResponse.json({
+            success: true,
             message: 'Authenticated successfully',
             user: { uid, email }
         });
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
             value: token,
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax', // Use 'lax' for general use, 'strict' if highly specific
+            sameSite: 'lax',
             path: '/',
             maxAge: 3600 // 1 hour in seconds
         });

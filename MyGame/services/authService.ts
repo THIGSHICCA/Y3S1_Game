@@ -11,9 +11,9 @@ import {
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 
-/* ──────────────────────────────────────────────
- *  Validation helpers
- * ────────────────────────────────────────────── */
+
+
+
 
 export interface ValidationResult {
     valid: boolean;
@@ -32,9 +32,9 @@ export interface PasswordStrength {
     };
 }
 
-/**
- * Validate an email address format.
- */
+
+/* Validate an email address format.*/
+
 export const validateEmail = (email: string): ValidationResult => {
     if (!email.trim()) return { valid: false, message: "Email is required." };
     // Standard RFC-style regex
@@ -43,9 +43,9 @@ export const validateEmail = (email: string): ValidationResult => {
     return { valid: true, message: "" };
 };
 
-/**
- * Validate a password against strength rules.
- */
+
+/*Validate a password against strength rules.*/
+
 export const validatePassword = (password: string): ValidationResult => {
     if (!password) return { valid: false, message: "Password is required." };
     if (password.length < 8) return { valid: false, message: "Password must be at least 8 characters." };
@@ -56,9 +56,9 @@ export const validatePassword = (password: string): ValidationResult => {
     return { valid: true, message: "" };
 };
 
-/**
- * Compute a password-strength score for the meter UI.
- */
+
+/*Compute a password-strength.*/
+
 export const getPasswordStrength = (password: string): PasswordStrength => {
     const checks = {
         minLength: password.length >= 8,
@@ -74,13 +74,13 @@ export const getPasswordStrength = (password: string): PasswordStrength => {
     return { score, label, checks };
 };
 
-/* ──────────────────────────────────────────────
- *  Auth functions
- * ────────────────────────────────────────────── */
 
-/**
- * Register a new user with email/password and create their Firestore profile.
- */
+
+
+
+
+/* Register a new user with email/password and create their Firestore profile.*/
+
 export const signUp = async (email: string, password: string, username: string) => {
     // Client-side validation before calling Firebase
     const emailCheck = validateEmail(email);
@@ -90,7 +90,7 @@ export const signUp = async (email: string, password: string, username: string) 
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Set display name on the Firebase Auth profile
+
     await updateProfile(user, { displayName: username });
 
     // Create the user document in Firestore
@@ -104,47 +104,39 @@ export const signUp = async (email: string, password: string, username: string) 
         createdAt: serverTimestamp(),
     });
 
-    // Send email verification and immediately sign out
+
     await sendEmailVerification(user);
     await firebaseSignOut(auth);
 
     return userCredential;
 };
 
-/**
- * Sign in an existing user with email/password.
- */
+
+
+
 export const signIn = async (email: string, password: string) => {
     const emailCheck = validateEmail(email);
     if (!emailCheck.valid) throw new Error(emailCheck.message);
     if (!password) throw new Error("Password is required.");
-    
+
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    
-    // Check if email is verified
+
+
     if (!userCredential.user.emailVerified) {
         await firebaseSignOut(auth);
         throw new Error("Please verify your email address before logging in. Check your inbox.");
     }
-    
+
     return userCredential;
 };
 
-/**
- * Sign out the current user.
- */
+
 export const signOut = async () => {
     return firebaseSignOut(auth);
 };
 
-/* ──────────────────────────────────────────────
- *  Social Auth functions
- * ────────────────────────────────────────────── */
+/* Social Auth functions*/
 
-/**
- * Handle user data creation for social logins.
- * Only creates a document if one doesn't already exist.
- */
 const syncSocialUser = async (user: any) => {
     const userRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(userRef);
@@ -162,9 +154,8 @@ const syncSocialUser = async (user: any) => {
     }
 };
 
-/**
- * Sign in with Google Popup.
- */
+
+
 export const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
@@ -172,9 +163,8 @@ export const signInWithGoogle = async () => {
     return result;
 };
 
-/**
- * Sign in with Facebook Popup.
- */
+
+
 export const signInWithFacebook = async () => {
     const provider = new FacebookAuthProvider();
     const result = await signInWithPopup(auth, provider);
